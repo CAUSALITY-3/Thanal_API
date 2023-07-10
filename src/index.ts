@@ -1,4 +1,6 @@
 import express from 'express';
+require('dotenv').config();
+console.log(process.env.HELLO)
 const app = express();
 const port = 5000;
 
