@@ -1,7 +1,32 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false
+const productSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    photoUrls: {
+        type: [String],
+        required: true
+    },
+    price: {
+        type: Number
+    },
+    createdAt: {
+        type: Date,
+        immutable: true,
+        
+    }
+}, {
+    timestamps: true
 })
+
+const Product = mongoose.model('Product', productSchema)
+
+module.exports = Product
