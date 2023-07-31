@@ -5,15 +5,22 @@ const app = express();
 const port = 5000;
 
 const mongoose = require('mongoose')
-async function run() {
-  try{
-    await mongoose.connect('mongodb://127.0.0.1:27017/thanal')
-    console.log("connected to db")
-    } catch (e) {
-    console.log("not connected",e)
-  }
-}
+const userSchema = new mongoose.Schema({
+    name:String,
+    age:Number
+})
+
+const User = mongoose.model('User', userSchema)
+
+ mongoose.connect('mongodb://127.0.0.1:27017/thanal')
+    console.log("sasi")
+
 run()
+
+async function run() {
+    const user = await User.create({name:"Abin",age:26})
+    console.log(user)
+}
 
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
