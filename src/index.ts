@@ -1,27 +1,35 @@
-import express from 'express';
-require('dotenv').config();
-console.log(process.env.HELLO)
+import express from "express";
+require("dotenv").config();
+console.log(process.env.HELLO);
+const Product = require("./model/products");
 const app = express();
 const port = 5000;
 
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
-    name:String,
-    age:Number
-})
+  name: String,
+  age: Number,
+});
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model("User", userSchema);
 
- mongoose.connect('mongodb://127.0.0.1:27017/thanal')
-    console.log("sasi")
+mongoose.connect("mongodb://127.0.0.1:27017/thanal");
+console.log("sasi");
 
-run()
-
-async function run() {
-    const user = await User.create({name:"Abin",age:26})
-    console.log(user)
-}
+app.use(express.json());
+app.post(
+  "/products",
+  async (req, res) => {
+    console.log("sasi", req.body);
+    const product = await Product.create(req.body);
+    res.send(product);
+    console.log(product);
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
 
 app.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
+  return console.log(`Express is listening at http://localhost:${port}`);
 });
