@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "af1bb7db-0a9e-492c-8e25-9680bdae6904",
+		"name": "Thanal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Hibiscus\",\r\n  \"priority\":5,\r\n  \"description\": \"Product Description\",\r\n  \"price\": 99.99,\r\n  \"category\": \"Plants\",\r\n  \"inventory\": 100,\r\n  \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n  \"features\": [{\r\n    \"type\": \"color\",\r\n    \"color\":{\r\n      \"red\":{\r\n        \"images\":[\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\"\r\n        ],\r\n        \"price\":200,\r\n        \"default\":true\r\n      },\r\n      \"yellow\":{\r\n        \"images\":[\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\"\r\n        ],\r\n        \"price\":220\r\n      },\r\n      \"blue\":{\r\n        \"images\":[\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\"\r\n        ],\r\n        \"price\":230\r\n      }\r\n    }\r\n  }],\r\n  \"ratings\": {\r\n    \"average\": 4.5,\r\n    \"count\": 100\r\n  },\r\n  \"reviews\": [\r\n    {\r\n      \"customer\": \"customer_id_1\",\r\n      \"rating\": 4,\r\n      \"comment\": \"Great product!\",\r\n      \"reviewDate\": \"2023-08-05T14:30:00Z\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get productMainList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/productMainList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"productMainList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get productById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/product?id=64d5b6bdaaabbeed955291e0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"product"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "64d5b6bdaaabbeed955291e0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get productByIdAndUpdate",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ratings\": {\r\n        \"average\": 1,\r\n        \"count\": 10\r\n    },\r\n    \"description\": \"Appus fruit\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/product?id=64d5b6bdaaabbeed955291e0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"product"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "64d5b6bdaaabbeed955291e0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get productByIdAndDelete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/product?id=64d5b6bdaaabbeed955291e0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"product"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "64d5b6bdaaabbeed955291e0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
