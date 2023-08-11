@@ -6,24 +6,34 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    priority: {
+      type: Number,
+      default: 1
+    },
     name: {
       type: String,
       required: true,
       trim: true,
-      unique:true
+      unique: true
     },
     description: {
       type: String,
       required: true,
       trim: true,
     },
-    photoUrls: {
-      type: [String],
+    image: {
+      type: String,
       required: true,
     },
     price: {
       type: Number,
       min: 0,
+      required: true,
+    },
+    inventory: {
+      type: Number,
+      min: 0,
+      required: true,
     },
     createdAt: {
       type: Date,
@@ -37,9 +47,24 @@ const productSchema = new mongoose.Schema(
     videoUrl: {
       type: String,
     },
-  },
-  {
-    timestamps: true,
+    features: { type: mongoose.Schema.Types.Mixed },
+    ratings: {
+      average: {
+        type: Number,
+        default: 0
+      },
+      count: {
+        type: Number,
+        default: 0
+      },
+    },
+    reviews: [
+      {
+        customer: String,
+        rating: Number,
+        comment: String,
+        reviewDate: Date
+      }]
   }
 );
 
