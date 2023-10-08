@@ -156,3 +156,17 @@ export const deleteProductById = async (id) => {
   }
   return product;
 };
+
+export const updateOrAddField = async (body) => {
+  const product = await Product.updateMany(
+    {},
+    {
+      $set: {
+        images: body.images,
+      },
+    },
+    { multi: true }
+  );
+
+  return product;
+};

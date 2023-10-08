@@ -5,7 +5,8 @@ import {
   getProductMainLits,
   getProductById,
   updateProductById,
-  deleteProductById
+  deleteProductById,
+  updateOrAddField,
 } from "../services/products";
 
 router.post(
@@ -47,5 +48,10 @@ router
     const product = await deleteProductById(id);
     res.send(product);
   });
+
+router.put("/updateOrAddField", async (req, res) => {
+  const result = await updateOrAddField(req.body);
+  res.send(result);
+});
 
 module.exports = router;
