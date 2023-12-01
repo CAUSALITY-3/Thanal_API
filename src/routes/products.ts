@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 import {
   createProduct,
-  getProductMainLits,
+  getProductMainList,
   getProductById,
   updateProductById,
   deleteProductById,
   updateOrAddField,
+  findProductFromMainList,
+  removeProductFromMainList,
+  updateProductFromMainList
 } from "../services/products";
 
 router.post(
@@ -23,7 +26,40 @@ router.post(
 router.get(
   "/productMainList",
   async (req, res) => {
-    const product = await getProductMainLits();
+    const product = await getProductMainList();
+    res.send(product);
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
+
+router.get(
+  "/findProductFromMainList",
+  async (req, res) => {
+    const product = await findProductFromMainList(req.body);
+    res.send(product);
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
+
+router.get(
+  "/updateProductFromMainList",
+  async (req, res) => {
+    const product = await updateProductFromMainList(req.body);
+    res.send(product);
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
+
+router.get(
+  "/removeProductFromMainList",
+  async (req, res) => {
+    const product = await removeProductFromMainList(req.body);
     res.send(product);
   },
   (error, req, res, next) => {
