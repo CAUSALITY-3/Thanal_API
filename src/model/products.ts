@@ -15,6 +15,11 @@ const productSchema = new mongoose.Schema({
     trim: true,
     unique: true,
   },
+  family: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   description: {
     type: String,
     required: true,

@@ -7,7 +7,7 @@ export const createProduct = async (data) => {
     new: true,
   });
   if (product._id) {
-    await updateProductFromMainList(product)
+    await updateProductFromMainList(product);
   }
   return product;
 };
@@ -17,25 +17,34 @@ export const getProductMainList = async () => {
 };
 
 export const findProductFromMainList = async (product) => {
-  const { name, category } = product;
+  const { family, category, name } = product;
   return await productMainList.findOneAndUpdate({
     type: category,
-    [`data.${name}.name`]: name,
+    [`data.${family}.name`]: name,
   });
 };
 
 export const removeProductFromMainList = async (product) => {
-  const { name, category } = product;
+  const { name, category, family } = product;
   return await productMainList.findOneAndUpdate(
-    { type: category, [`data.${name}.name`]: name },
-    { $unset: { [`data.${name}`]: {} } },
+    { type: category, [`data.${family}.name`]: name },
+    { $unset: { [`data.${family}`]: {} }, updatedAt: new Date() },
     { new: true }
   );
 };
 
 export const updateProductFromMainList = async (product) => {
-  const { _id, category, name, description, price, image, inventory, ratings } =
-    product;
+  const {
+    _id,
+    category,
+    name,
+    description,
+    price,
+    image,
+    inventory,
+    ratings,
+    family,
+  } = product;
   let result;
 
   try {
@@ -43,7 +52,7 @@ export const updateProductFromMainList = async (product) => {
       { type: category },
       {
         $set: {
-          [`data.${name}`]: {
+          [`data.${family}`]: {
             productId: _id,
             category,
             name,
@@ -54,35 +63,37 @@ export const updateProductFromMainList = async (product) => {
             ratings,
           },
         },
+        updatedAt: new Date(),
       },
       { upsert: true, new: true }
     );
   } catch (err) {
-    console.log(err)
-    try {
-      console.log("cr7")
-      result = await productMainList.create(
-        {
-          type: category,
-          data: {
-            Lilly: {
-              productId: _id,
-              category,
-              name,
-              description,
-              price,
-              image,
-              inventory,
-              ratings,
-            }
-          }
-        },
-        { upsert: true, new: true }
-      );
-    } catch (e) {
-      console.log("product not added to productMainList collection");
-      return e;
-    }
+    console.log(err);
+    return err;
+    // try {
+    //   console.log("cr7")
+    //   result = await productMainList.create(
+    //     {
+    //       type: category,
+    //       data: {
+    //         Lilly: {
+    //           productId: _id,
+    //           category,
+    //           name,
+    //           description,
+    //           price,
+    //           image,
+    //           inventory,
+    //           ratings,
+    //         }
+    //       }
+    //     },
+    //     { upsert: true, new: true }
+    //   );
+    // } catch (e) {
+    //   console.log("product not added to productMainList collection");
+    //   return e;
+    // }
   }
   return result;
 };
@@ -112,7 +123,9 @@ export const deleteProductById = async (id) => {
   if (product?._id) {
     try {
       const updatedList = await removeProductFromMainList(product);
-      const numberOfProducts = updatedList?.data?.keys() ? Array.from(updatedList.data.keys()).length : 0;
+      const numberOfProducts = updatedList?.data?.keys()
+        ? Array.from(updatedList.data.keys()).length
+        : 0;
       if (updatedList._id && !numberOfProducts) {
         await productMainList.findByIdAndDelete(updatedList._id);
       }
