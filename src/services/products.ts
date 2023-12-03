@@ -1,5 +1,6 @@
 const Product = require("../model/products");
 const productMainList = require("../model/productMainList");
+import { updateFeature } from "./productFeatures";
 
 export const createProduct = async (data) => {
   const product = await Product.findOneAndUpdate({ name: data.name }, data, {
@@ -7,6 +8,7 @@ export const createProduct = async (data) => {
     new: true,
   });
   if (product._id) {
+    await featureUpdate(product, true, false);
     await updateProductFromMainList(product);
   }
   return product;
@@ -122,6 +124,7 @@ export const deleteProductById = async (id) => {
   const product = await Product.findByIdAndDelete(id, { new: true });
   if (product?._id) {
     try {
+      await featureUpdate(product, false, true);
       const updatedList = await removeProductFromMainList(product);
       const numberOfProducts = updatedList?.data?.keys()
         ? Array.from(updatedList.data.keys()).length
@@ -136,6 +139,18 @@ export const deleteProductById = async (id) => {
   return product;
 };
 
+export async function featureUpdate(product, add, remove) {
+  if (product?.features?.length) {
+    const { family, _id, features } = product;
+    const data = {
+      family,
+      id: _id,
+      addingFeatures: add ? [features] : [],
+      removingFeatures: remove ? [features] : [],
+    };
+    await updateFeature(data);
+  }
+}
 export const updateOrAddField = async (body) => {
   const product = await Product.updateMany(
     {},

@@ -55,7 +55,16 @@ const productSchema = new mongoose.Schema({
   videoUrl: {
     type: String,
   },
-  features: { type: mongoose.Schema.Types.Mixed },
+  features: {
+    type: Array,
+    of: {
+      type: Object,
+      of: {
+        type: String,
+        value: String,
+      },
+    },
+  },
   ratings: {
     average: {
       type: Number,
