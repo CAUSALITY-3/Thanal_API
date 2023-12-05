@@ -1,11 +1,11 @@
-const productFeatures = require("../model/productFeatures");
-import { dbOperatorData } from "../utils/utils"
+import { productFeatures } from "../model/productFeatures";
+import { dbOperatorData } from "../utils/utils";
 
 export async function addFeature(data) {
   const { family, features } = data;
   const response = await productFeatures.create({ family, features });
   return response;
-};
+}
 
 export async function updateFeature(data) {
   const { family, id, removingFeatures, addingFeatures } = data;
@@ -18,4 +18,4 @@ export async function updateFeature(data) {
     { new: true }
   );
   return response;
-};
+}

@@ -1,14 +1,14 @@
-const Product = require("../model/products");
-const productMainList = require("../model/productMainList");
+import { Product } from "../model/products";
+import { productMainList } from "../model/productMainList";
 import { updateFeature } from "./productFeatures";
 
 export async function getProductById(id) {
   return await Product.findById(id);
-};
+}
 
 export async function getProductMainList() {
   return await productMainList.find();
-};
+}
 
 export async function createProduct(data) {
   const product = await Product.findOneAndUpdate({ name: data.name }, data, {
@@ -20,7 +20,7 @@ export async function createProduct(data) {
     await updateProductFromMainList(product);
   }
   return product;
-};
+}
 
 export async function findProductFromMainList(product) {
   const { family, category, name } = product;
@@ -28,7 +28,7 @@ export async function findProductFromMainList(product) {
     type: category,
     [`data.${family}.name`]: name,
   });
-};
+}
 
 export async function removeProductFromMainList(product) {
   const { name, category, family } = product;
@@ -37,7 +37,7 @@ export async function removeProductFromMainList(product) {
     { $unset: { [`data.${family}`]: {} }, updatedAt: new Date() },
     { new: true }
   );
-};
+}
 
 export async function updateProductFromMainList(product) {
   const {
@@ -102,7 +102,7 @@ export async function updateProductFromMainList(product) {
     // }
   }
   return result;
-};
+}
 
 export async function updateProductById(id, body) {
   const product = await Product.findByIdAndUpdate(
@@ -118,7 +118,7 @@ export async function updateProductById(id, body) {
     }
   }
   return product;
-};
+}
 
 export async function deleteProductById(id) {
   const product = await Product.findByIdAndDelete(id, { new: true });
@@ -137,7 +137,7 @@ export async function deleteProductById(id) {
     }
   }
   return product;
-};
+}
 
 export async function featureUpdate(product, add, remove) {
   if (product?.features?.length) {
@@ -164,4 +164,4 @@ export async function updateOrAddField(body) {
   );
 
   return product;
-};
+}

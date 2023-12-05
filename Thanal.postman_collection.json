@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "af1bb7db-0a9e-492c-8e25-9680bdae6904",
+		"_postman_id": "2a636693-4ff3-40a6-b295-716f11040461",
 		"name": "Thanal",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29080572"
 	},
 	"item": [
 		{
@@ -12,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Hibiscus\",\r\n  \"priority\":5,\r\n  \"description\": \"Product Description\",\r\n  \"price\": 99.99,\r\n  \"category\": \"Plants\",\r\n  \"inventory\": 100,\r\n  \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n  \"features\": [{\r\n    \"type\": \"color\",\r\n    \"color\":{\r\n      \"red\":{\r\n        \"images\":[\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\"\r\n        ],\r\n        \"price\":200,\r\n        \"default\":true\r\n      },\r\n      \"yellow\":{\r\n        \"images\":[\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\"\r\n        ],\r\n        \"price\":220\r\n      },\r\n      \"blue\":{\r\n        \"images\":[\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n          \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\"\r\n        ],\r\n        \"price\":230\r\n      }\r\n    }\r\n  }],\r\n  \"ratings\": {\r\n    \"average\": 4.5,\r\n    \"count\": 100\r\n  },\r\n  \"reviews\": [\r\n    {\r\n      \"customer\": \"customer_id_1\",\r\n      \"rating\": 4,\r\n      \"comment\": \"Great product!\",\r\n      \"reviewDate\": \"2023-08-05T14:30:00Z\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"name\": \"Apple\",\r\n  \"priority\":5,\r\n  \"description\": \"Product Description\",\r\n  \"price\": 99.99,\r\n  \"category\": \"Fruits\",\r\n  \"inventory\": 100,\r\n  \"image\": \"https://shop.organicmandya.com/cdn/shop/products/1DGxnvg206vOEx3BLPuxJQJBKyZWPYJDR_9d12e40f-d94c-4566-bc42-85f57dd16a64_1051x700.jpg?v=1608550655\",\r\n  \"features\": {\r\n      \"color\": \"red\"\r\n  },\r\n  \"ratings\": {\r\n    \"average\": 4.5,\r\n    \"count\": 100\r\n  },\r\n  \"reviews\": [\r\n    {\r\n      \"customer\": \"customer_id_1\",\r\n      \"rating\": 4,\r\n      \"comment\": \"Great product!\",\r\n      \"reviewDate\": \"2023-08-05T14:30:00Z\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -67,6 +68,102 @@
 			"response": []
 		},
 		{
+			"name": "remove productMainList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"CHAIR\",\r\n    \"category\": \"Furniture\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/removeProductFromMainList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"removeProductFromMainList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find productMainList Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/findProductFromMainList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"findProductFromMainList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update ProductFromMainList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ratings\": {\r\n        \"average\": 4.5,\r\n        \"count\": 100\r\n    },\r\n    \"productId\": \"64d351764a3604adae2888ee\",\r\n    \"category\": \"Fruits\",\r\n    \"name\": \"Apple\",\r\n    \"description\": \"Product Description\",\r\n    \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n    \"price\": 99.99,\r\n    \"inventory\": 100,\r\n    \"_id\": \"64d4bc9467a7a7c927581771\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/products/updateProductFromMainList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"updateProductFromMainList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get productById",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -84,7 +181,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/products/product?id=64d5b6bdaaabbeed955291e0",
+					"raw": "http://localhost:5000/products/product?id=64d351764a3604adae2888ee",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -97,7 +194,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "64d5b6bdaaabbeed955291e0"
+							"value": "64d351764a3604adae2888ee"
 						}
 					]
 				}
@@ -119,7 +216,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/products/product?id=64d5b6bdaaabbeed955291e0",
+					"raw": "http://localhost:5000/products/product?id=64d5be94aaabbeed955294a4",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -132,7 +229,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "64d5b6bdaaabbeed955291e0"
+							"value": "64d5be94aaabbeed955294a4"
 						}
 					]
 				}
@@ -154,7 +251,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/products/product?id=64d5b6bdaaabbeed955291e0",
+					"raw": "http://localhost:5000/products/product?id=65698ae05244ec33948e78a0",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -167,8 +264,66 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "64d5b6bdaaabbeed955291e0"
+							"value": "65698ae05244ec33948e78a0"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateFeature",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"family\": \"Lilly\",\n    \"id\": \"123\",\n    \"addingFeatures\": [\n        {\n            \"type\": \"color\",\n            \"value\": \"blue\"\n        },\n        {\n            \"type\": \"size\",\n            \"value\": \"large\"\n        }\n    ],\n    \"removingFeatures\": [\n        {\n            \"type\": \"color\",\n            \"value\": \"black\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/features/updateFeature",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"features",
+						"updateFeature"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addFeature",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"family\": \"Adenia\",\n    \"features\": {\n        \"color\":{\n            \"red\":[\"123\",\"456\"],\n            \"blue\":[\"789\"]\n        },\n        \"size\":{\n            \"small\":[\"789\"],\n            \"Medium\":[\"123\"]\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/features/addFeature",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"features",
+						"addFeature"
 					]
 				}
 			},

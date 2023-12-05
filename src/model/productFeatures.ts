@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const productFeatureSchema = new mongoose.Schema({
   family: {
@@ -26,6 +26,5 @@ const productFeatureSchema = new mongoose.Schema({
   },
 });
 
-const productFeatures = mongoose.model("productFeatures", productFeatureSchema);
+export const productFeatures = mongoose.model("productFeatures", productFeatureSchema);
 
-module.exports = productFeatures;

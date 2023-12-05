@@ -9,7 +9,7 @@ import {
   updateOrAddField,
   findProductFromMainList,
   removeProductFromMainList,
-  updateProductFromMainList
+  updateProductFromMainList,
 } from "../services/products";
 
 router.post(
@@ -34,6 +34,19 @@ router.get(
     }
   }
 );
+
+export async function handlerFunction(fun) {
+  try {
+    await fun();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// router.get("/productMainList", async (req, res) => {
+//   const product = await getProductMainList();
+//   res.send(product);
+// });
 
 router.get(
   "/findProductFromMainList",

@@ -1,4 +1,10 @@
-export function formatProductFeatures(data) {}
+export async function handlerFunction(fun) {
+  try {
+    await fun();
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export function dbOperatorData(data, id) {
     return data.reduce((acc, obj) => {
