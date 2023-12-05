@@ -26,11 +26,12 @@ router.post(
 router.get(
   "/productMainList",
   async (req, res) => {
-    const product = await getProductMainList();
-    res.send(product);
-  },
-  (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
+    try {
+      const product = await getProductMainList();
+      res.send(product);
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
   }
 );
 
