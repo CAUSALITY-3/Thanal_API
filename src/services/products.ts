@@ -2,7 +2,15 @@ const Product = require("../model/products");
 const productMainList = require("../model/productMainList");
 import { updateFeature } from "./productFeatures";
 
-export const createProduct = async (data) => {
+export async function getProductById(id) {
+  return await Product.findById(id);
+};
+
+export async function getProductMainList() {
+  return await productMainList.find();
+};
+
+export async function createProduct(data) {
   const product = await Product.findOneAndUpdate({ name: data.name }, data, {
     upsert: true,
     new: true,
@@ -14,19 +22,15 @@ export const createProduct = async (data) => {
   return product;
 };
 
-export const getProductMainList = async () => {
-  return await productMainList.find();
-};
-
-export const findProductFromMainList = async (product) => {
+export async function findProductFromMainList(product) {
   const { family, category, name } = product;
-  return await productMainList.findOneAndUpdate({
+  return await productMainList.find({
     type: category,
     [`data.${family}.name`]: name,
   });
 };
 
-export const removeProductFromMainList = async (product) => {
+export async function removeProductFromMainList(product) {
   const { name, category, family } = product;
   return await productMainList.findOneAndUpdate(
     { type: category, [`data.${family}.name`]: name },
@@ -35,7 +39,7 @@ export const removeProductFromMainList = async (product) => {
   );
 };
 
-export const updateProductFromMainList = async (product) => {
+export async function updateProductFromMainList(product) {
   const {
     _id,
     category,
@@ -100,11 +104,7 @@ export const updateProductFromMainList = async (product) => {
   return result;
 };
 
-export const getProductById = async (id) => {
-  return await Product.findById(id);
-};
-
-export const updateProductById = async (id, body) => {
+export async function updateProductById(id, body) {
   const product = await Product.findByIdAndUpdate(
     id,
     { ...body },
@@ -120,7 +120,7 @@ export const updateProductById = async (id, body) => {
   return product;
 };
 
-export const deleteProductById = async (id) => {
+export async function deleteProductById(id) {
   const product = await Product.findByIdAndDelete(id, { new: true });
   if (product?._id) {
     try {
@@ -151,7 +151,8 @@ export async function featureUpdate(product, add, remove) {
     await updateFeature(data);
   }
 }
-export const updateOrAddField = async (body) => {
+
+export async function updateOrAddField(body) {
   const product = await Product.updateMany(
     {},
     {

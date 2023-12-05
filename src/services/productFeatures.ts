@@ -1,23 +1,19 @@
 const productFeatures = require("../model/productFeatures");
+import { dbOperatorData } from "../utils/utils"
 
-export const addFeature = async (data) => {
+export async function addFeature(data) {
   const { family, features } = data;
   const response = await productFeatures.create({ family, features });
   return response;
 };
 
-export const updateFeature = async (data) => {
+export async function updateFeature(data) {
   const { family, id, removingFeatures, addingFeatures } = data;
-  const reducedData = (data) =>
-    data.reduce((acc, obj) => {
-      acc[`features.${obj.type}.${obj.value}`] = id;
-      return acc;
-    }, {});
   const response = await productFeatures.findOneAndUpdate(
     { family },
     {
-      $pull: reducedData(removingFeatures),
-      $addToSet: reducedData(addingFeatures),
+      $pull: dbOperatorData(removingFeatures, id),
+      $addToSet: dbOperatorData(addingFeatures, id),
     },
     { new: true }
   );
