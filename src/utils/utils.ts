@@ -1,9 +1,8 @@
-export function dbOperatorData(data, id) {
-  return data.reduce((acc, obj) => {
+export const dbOperatorData = (data, id) =>
+  data.reduce((acc, obj) => {
     acc[`features.${obj.type}.${obj.value}`] = id;
     return acc;
   }, {});
-}
 
 export const asyncHandler = (fn) =>
   function asyncUtilWrap(...args) {
