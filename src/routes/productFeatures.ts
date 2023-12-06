@@ -1,12 +1,19 @@
-const express = require("express");
+import express from "express";
+import { asyncHandler } from "../utils/utilFunctions";
+import { ProductFeatureServices } from "../services/productFeatures";
+import { Injector } from "../utils/injector";
+
+console.log("productFeatureRoute");
 const router = express.Router();
-import { asyncHandler } from "../utils/utils";
-import { addFeature, updateFeature } from "../services/productFeatures";
+
+const productFeatureServices: ProductFeatureServices = Injector.get(
+  "productFeatureServices"
+);
 
 router.post(
   "/addFeature",
   asyncHandler(async (req, res) => {
-    const feature = await addFeature(req.body);
+    const feature = await productFeatureServices.addFeature(req.body);
     res.send(feature);
   })
 );
@@ -14,9 +21,8 @@ router.post(
 router.post(
   "/updateFeature",
   asyncHandler(async (req, res) => {
-    const feature = await updateFeature(req.body);
+    const feature = await productFeatureServices.updateFeature(req.body);
     res.send(feature);
   })
 );
-
 module.exports = router;

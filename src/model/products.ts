@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+console.log("productSchema");
 const productSchema = new mongoose.Schema({
   category: {
     type: String,
@@ -86,4 +87,3 @@ const productSchema = new mongoose.Schema({
 });
 
 export const Product = mongoose.model("Product", productSchema);
-

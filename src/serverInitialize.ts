@@ -1,10 +1,9 @@
 import express from "express";
 import cors from "cors";
 
-const productRouter = require("./products");
-const featureRouter = require("./productFeatures");
+console.log("initializeServer");
 
-export function expressInitialize() {
+export async function initializeServer() {
   const app = express();
   const port = process.env.PORT || 5000;
 
@@ -12,8 +11,8 @@ export function expressInitialize() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.use("/products", productRouter);
-  app.use("/features", featureRouter);
+  app.use("/products", require("./routes/products"));
+  app.use("/features", require("./routes/productFeatures"));
 
   app.listen(port, () => {
     return console.log(`Server listening on Port: ${port}`);

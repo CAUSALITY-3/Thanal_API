@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+console.log("productMainListSchema");
 const productMainListSchema = new mongoose.Schema({
   type: {
     type: String,

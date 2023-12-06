@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 export async function dbConnect() {
   const url = process.env.MONGO_URL;
