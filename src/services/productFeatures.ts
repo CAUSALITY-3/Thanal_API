@@ -1,21 +1,26 @@
-import { productFeatures } from "../model/productFeatures";
-import { dbOperatorData } from "../utils/utils";
+import { dbOperatorData } from "../utils/utilFunctions";
 
-export async function addFeature(data) {
-  const { family, features } = data;
-  const response = await productFeatures.create({ family, features });
-  return response;
-}
+console.log("ProductFeatureServices");
 
-export async function updateFeature(data) {
-  const { family, id, removingFeatures, addingFeatures } = data;
-  const response = await productFeatures.findOneAndUpdate(
-    { family },
-    {
-      $pull: dbOperatorData(removingFeatures, id),
-      $addToSet: dbOperatorData(addingFeatures, id),
-    },
-    { upsert: true, new: true }
-  );
-  return response;
+export class ProductFeatureServices {
+  constructor(private productFeatures) {}
+
+  async addFeature(data) {
+    const { family, features } = data;
+    const response = await this.productFeatures.create({ family, features });
+    return response;
+  }
+
+  async updateFeature(data) {
+    const { family, id, removingFeatures, addingFeatures } = data;
+    const response = await this.productFeatures.findOneAndUpdate(
+      { family },
+      {
+        $pull: dbOperatorData(removingFeatures, id),
+        $addToSet: dbOperatorData(addingFeatures, id),
+      },
+      { upsert: true, new: true }
+    );
+    return response;
+  }
 }

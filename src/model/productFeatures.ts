@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+console.log("productFeatureSchema");
 const productFeatureSchema = new mongoose.Schema({
   family: {
     type: String,
@@ -26,5 +27,7 @@ const productFeatureSchema = new mongoose.Schema({
   },
 });
 
-export const productFeatures = mongoose.model("productFeatures", productFeatureSchema);
-
+export const productFeatures = mongoose.model(
+  "productFeatures",
+  productFeatureSchema
+);
