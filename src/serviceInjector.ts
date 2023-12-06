@@ -1,4 +1,4 @@
-import { Injector } from "./utils/injector";
+import { Injector } from "./lib/injector";
 import { ProductServices } from "./services/products";
 
 import { Product } from "./model/products";

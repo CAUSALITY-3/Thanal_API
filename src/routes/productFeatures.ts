@@ -1,7 +1,7 @@
 import express from "express";
 import { asyncHandler } from "../utils/utilFunctions";
 import { ProductFeatureServices } from "../services/productFeatures";
-import { Injector } from "../utils/injector";
+import { Injector } from "../lib/injector";
 
 console.log("productFeatureRoute");
 const router = express.Router();

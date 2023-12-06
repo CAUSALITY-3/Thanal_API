@@ -1,4 +1,5 @@
 import { ProductFeatureServices } from "./productFeatures";
+import { loggedMethod } from "../lib/log";
 
 console.log("ProductServices");
 
@@ -8,10 +9,12 @@ export class ProductServices {
     private productMainList,
     private ProductFeatureServices: ProductFeatureServices
   ) {}
+
   public async getProductById(id) {
     return await this.Product.findById(id);
   }
 
+  @loggedMethod
   async getProductMainList() {
     return await this.productMainList.find();
   }
