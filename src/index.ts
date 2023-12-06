@@ -1,6 +1,6 @@
 import { dbConnect } from "./model/DB";
 import { initializeServer } from "./serverInitialize";
-import { injectServices } from "./seriviceInjector";
+import { injectServices } from "./serviceInjector";
 require("dotenv").config();
 
 console.log(process.env.HELLO);
