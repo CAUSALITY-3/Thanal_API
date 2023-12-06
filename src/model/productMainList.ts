@@ -5,7 +5,7 @@ const productMainListSchema = new mongoose.Schema({
     type: String,
   },
   data: {
-    type: Map,
+    type: Object,
     of: {
       productId: String,
       category: {

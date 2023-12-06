@@ -16,6 +16,6 @@ export function expressInitialize() {
   app.use("/features", featureRouter);
 
   app.listen(port, () => {
-    return console.log(`Express is listening at port: ${port}`);
+    return console.log(`Server listening on Port: ${port}`);
   });
 }

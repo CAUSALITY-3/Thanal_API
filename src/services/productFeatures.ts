@@ -15,7 +15,7 @@ export async function updateFeature(data) {
       $pull: dbOperatorData(removingFeatures, id),
       $addToSet: dbOperatorData(addingFeatures, id),
     },
-    { new: true }
+    { upsert: true, new: true }
   );
   return response;
 }

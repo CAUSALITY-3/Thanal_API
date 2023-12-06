@@ -75,31 +75,6 @@ export async function updateProductFromMainList(product) {
     );
   } catch (err) {
     console.log(err);
-    return err;
-    // try {
-    //   console.log("cr7")
-    //   result = await productMainList.create(
-    //     {
-    //       type: category,
-    //       data: {
-    //         Lilly: {
-    //           productId: _id,
-    //           category,
-    //           name,
-    //           description,
-    //           price,
-    //           image,
-    //           inventory,
-    //           ratings,
-    //         }
-    //       }
-    //     },
-    //     { upsert: true, new: true }
-    //   );
-    // } catch (e) {
-    //   console.log("product not added to productMainList collection");
-    //   return e;
-    // }
   }
   return result;
 }
@@ -140,13 +115,13 @@ export async function deleteProductById(id) {
 }
 
 export async function featureUpdate(product, add, remove) {
-  if (product?.features?.length) {
+  if (Array.isArray(product?.features) && product.features.length) {
     const { family, _id, features } = product;
     const data = {
       family,
       id: _id,
-      addingFeatures: add ? [features] : [],
-      removingFeatures: remove ? [features] : [],
+      addingFeatures: add ? features : [],
+      removingFeatures: remove ? features : [],
     };
     await updateFeature(data);
   }
