@@ -33,8 +33,10 @@ export class ProductServices {
       }
     );
     if (product?._id) {
-      await this.featureUpdate(product, true, false);
-      await this.updateProductFromMainList(product);
+      await Promise.all([
+        this.featureUpdate(product, true, false),
+        this.updateProductFromMainList(product),
+      ]);
     }
     return product;
   }

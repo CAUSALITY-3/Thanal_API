@@ -19,7 +19,7 @@ export function Log(originalMethod: any, context: ClassMethodDecoratorContext) {
       return await originalMethod.call(this, ...args);
 
     const obj = {
-      component: this.name,
+      component: this.constructor.name,
       function: methodName,
       input: args,
     };
