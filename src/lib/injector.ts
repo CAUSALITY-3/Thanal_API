@@ -1,4 +1,3 @@
-"use strict";
 console.log("Injector_Util");
 
 class Injector {
@@ -37,7 +36,7 @@ class Injector {
     }
   }
   public clear() {
-    this.singletonObj = [];
+    this.singletonObj = {};
   }
 }
 /* Create a static version of the class. */

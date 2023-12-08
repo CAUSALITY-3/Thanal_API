@@ -1,85 +1,40 @@
-interface LoggerParams {
-  type?: "log" | "trace" | "warn" | "info" | "debug";
-  inputs?: boolean;
-  outputs?: boolean;
-}
-
-const defaultParams: Required<LoggerParams> = {
-  type: "debug",
-  inputs: true,
-  outputs: true,
+const logType = {
+  ERROR: 31,
+  INFO: 32,
+  WARN: 33,
 };
 
-export function Log(params?: LoggerParams) {
-  const options: Required<LoggerParams> = {
-    type: params?.type || defaultParams.type,
-    inputs: params?.inputs === undefined ? defaultParams.inputs : params.inputs,
-    outputs:
-      params?.outputs === undefined ? defaultParams.outputs : params.outputs,
-  };
-
-  return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
-  ) {
-    const original = descriptor.value;
-
-    descriptor.value = function (...args: any[]) {
-      if (options.inputs) {
-        console[options.type]("Logged inputs:", args);
-      }
-
-      const result = original.apply(this, args);
-
-      if (options.outputs) {
-        console[options.type]("Logged outputs", result);
-      }
-
-      return result;
-    };
-  };
+function logger(type, data, message?) {
+  console.log(
+    `\x1b[${logType[type] || 33}m%s\x1b[0m`,
+    `[${type || "INFO"}] ${new Date().toISOString()} : ${message || ""}=> `,
+    JSON.stringify(data)
+  );
 }
 
-export function loggedMethod(
-  originalMethod: any,
-  context: ClassMethodDecoratorContext
-) {
+export function Log(originalMethod: any, context: ClassMethodDecoratorContext) {
   const methodName = String(context.name);
   async function replacementMethod(this: any, ...args: any[]) {
-    console.log("LOG: Entering method.", methodName);
-    let result;
-    try {
-      result = await originalMethod.call(this, ...args);
-    } catch (e) {
-      console.log("Error: Exiting method.", e);
-      throw e;
-    }
+    if (process.env.LOGGING_DISABLED)
+      return await originalMethod.call(this, ...args);
 
-    console.log("LOG: Exiting method.", result);
-    return result;
+    const obj = {
+      component: this.name,
+      function: methodName,
+      input: args,
+    };
+    logger("INFO", obj, "Requesting ");
+    try {
+      const result = await originalMethod.call(this, ...args);
+      obj["reponse"] = result;
+      logger("INFO", obj, "Success ");
+      return result;
+    } catch (error) {
+      obj["reponse"] = error;
+      logger("ERROR", error, "Failed ");
+      throw error;
+    }
   }
 
   return replacementMethod;
 }
-
-// export function loggedMethod<This, Args extends any[], Return>(
-//   target: (this: This, ...args: Args) => Return,
-//   context: ClassMethodDecoratorContext<
-//     This,
-//     (this: This, ...args: Args) => Return
-//   >
-// ) {
-//   const methodName = String(context.name);
-
-//   function replacementMethod(this: This, ...args: Args): Return {
-//     console.log(context);
-//     console.log(`LOG: Entering method '${methodName}'.${this}`);
-//     const result = target.call(this, ...args);
-//     console.log(`LOG: Exiting method '${methodName}'.`);
-//     console.log( result)
-//     return result;
-//   }
-
-//   return replacementMethod;
-// }

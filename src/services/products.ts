@@ -1,5 +1,5 @@
 import { ProductFeatureServices } from "./productFeatures";
-import { loggedMethod } from "../lib/log";
+import { Log } from "../lib/log";
 
 console.log("ProductServices");
 
@@ -10,15 +10,19 @@ export class ProductServices {
     private ProductFeatureServices: ProductFeatureServices
   ) {}
 
+  @Log
   public async getProductById(id) {
-    return await this.Product.findById(id);
+    const product = await this.Product.findById(id);
+    if (product?._id) return product;
+    return "Product is no more available.";
   }
 
-  @loggedMethod
+  @Log
   async getProductMainList() {
     return await this.productMainList.find();
   }
 
+  @Log
   async createProduct(data) {
     const product = await this.Product.findOneAndUpdate(
       { name: data.name },
@@ -28,13 +32,14 @@ export class ProductServices {
         new: true,
       }
     );
-    if (product._id) {
+    if (product?._id) {
       await this.featureUpdate(product, true, false);
       await this.updateProductFromMainList(product);
     }
     return product;
   }
 
+  @Log
   async findProductFromMainList(product) {
     const { family, category, name } = product;
     return await this.productMainList.find({
@@ -43,6 +48,7 @@ export class ProductServices {
     });
   }
 
+  @Log
   async removeProductFromMainList(product) {
     const { name, category, family } = product;
     return await this.productMainList.findOneAndUpdate(
@@ -52,6 +58,7 @@ export class ProductServices {
     );
   }
 
+  @Log
   async updateProductFromMainList(product) {
     const {
       _id,
@@ -64,69 +71,58 @@ export class ProductServices {
       ratings,
       family,
     } = product;
-    let result;
 
-    try {
-      result = await this.productMainList.findOneAndUpdate(
-        { type: category },
-        {
-          $set: {
-            [`data.${family}`]: {
-              productId: _id,
-              category,
-              name,
-              description,
-              price,
-              image,
-              inventory,
-              ratings,
-            },
+    return await this.productMainList.findOneAndUpdate(
+      { type: category },
+      {
+        $set: {
+          [`data.${family}`]: {
+            productId: _id,
+            category,
+            name,
+            description,
+            price,
+            image,
+            inventory,
+            ratings,
           },
-          updatedAt: new Date(),
         },
-        { upsert: true, new: true }
-      );
-    } catch (err) {
-      console.log(err);
-    }
-    return result;
+        updatedAt: new Date(),
+      },
+      { upsert: true, new: true }
+    );
   }
 
+  @Log
   async updateProductById(id, body) {
     const product = await this.Product.findByIdAndUpdate(
       id,
       { ...body },
       { new: true }
     );
-    if (product._id) {
-      try {
-        await this.updateProductFromMainList(product);
-      } catch (e) {
-        throw e;
-      }
+    if (product?._id) {
+      await this.updateProductFromMainList(product);
     }
     return product;
   }
 
+  @Log
   async deleteProductById(id) {
     const product = await this.Product.findByIdAndDelete(id, { new: true });
     if (product?._id) {
-      try {
-        await this.featureUpdate(product, false, true);
-        const updatedList = await this.removeProductFromMainList(product);
-        const numberOfProducts = updatedList?.data?.keys()
-          ? Array.from(updatedList.data.keys()).length
-          : 0;
-        if (updatedList._id && !numberOfProducts) {
-          await this.productMainList.findByIdAndDelete(updatedList._id);
-        }
-      } catch (e) {
-        throw e;
+      await this.featureUpdate(product, false, true);
+      const updatedList = await this.removeProductFromMainList(product);
+      const numberOfProducts = updatedList?.data?.keys()
+        ? Array.from(updatedList.data.keys()).length
+        : 0;
+      if (updatedList._id && !numberOfProducts) {
+        await this.productMainList.findByIdAndDelete(updatedList._id);
       }
     }
     return product;
   }
 
+  @Log
   async featureUpdate(product, add, remove) {
     if (Array.isArray(product?.features) && product.features.length) {
       const { family, _id, features } = product;
@@ -140,6 +136,7 @@ export class ProductServices {
     }
   }
 
+  @Log
   async updateOrAddField(body) {
     const product = await this.Product.updateMany(
       {},
