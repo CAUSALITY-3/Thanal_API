@@ -6,7 +6,7 @@ console.log("ProductServices");
 export class ProductServices {
   constructor(
     private Product,
-    private productMainList,
+    private ProductMainList,
     private ProductFeatureServices: ProductFeatureServices
   ) {}
 
@@ -19,19 +19,12 @@ export class ProductServices {
 
   @Log
   async getProductMainList() {
-    return await this.productMainList.find();
+    return await this.ProductMainList.find();
   }
 
   @Log
   async createProduct(data) {
-    const product = await this.Product.findOneAndUpdate(
-      { name: data.name },
-      data,
-      {
-        upsert: true,
-        new: true,
-      }
-    );
+    const product = await this.Product.create(data);
     if (product?._id) {
       await Promise.all([
         this.featureUpdate(product, true, false),
@@ -44,7 +37,7 @@ export class ProductServices {
   @Log
   async findProductFromMainList(product) {
     const { family, category, name } = product;
-    return await this.productMainList.find({
+    return await this.ProductMainList.find({
       type: category,
       [`data.${family}.name`]: name,
     });
@@ -53,7 +46,7 @@ export class ProductServices {
   @Log
   async removeProductFromMainList(product) {
     const { name, category, family } = product;
-    return await this.productMainList.findOneAndUpdate(
+    return await this.ProductMainList.findOneAndUpdate(
       { type: category, [`data.${family}.name`]: name },
       { $unset: { [`data.${family}`]: {} }, updatedAt: new Date() },
       { new: true }
@@ -74,7 +67,7 @@ export class ProductServices {
       family,
     } = product;
 
-    return await this.productMainList.findOneAndUpdate(
+    return await this.ProductMainList.findOneAndUpdate(
       { type: category },
       {
         $set: {
@@ -118,7 +111,7 @@ export class ProductServices {
         ? Array.from(updatedList.data.keys()).length
         : 0;
       if (updatedList._id && !numberOfProducts) {
-        await this.productMainList.findByIdAndDelete(updatedList._id);
+        await this.ProductMainList.findByIdAndDelete(updatedList._id);
       }
     }
     return product;

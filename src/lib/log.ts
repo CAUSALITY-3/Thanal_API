@@ -18,21 +18,21 @@ export function Log(originalMethod: any, context: ClassMethodDecoratorContext) {
     if (process.env.LOGGING_DISABLED)
       return await originalMethod.call(this, ...args);
 
-    const obj = {
+    const response = {
       component: this.constructor.name,
       function: methodName,
       requestBody: args,
     };
-    logger("INFO", obj, "Requesting ");
+    logger("INFO", response, "Requesting ");
     try {
       const result = await originalMethod.call(this, ...args);
-      obj["reponse"] = result;
-      logger("INFO", obj, "Success ");
+      response["reponse"] = result;
+      logger("INFO", response, "Success ");
       return result;
-    } catch (error) {
-      obj["error"] = error;
-      logger("ERROR", error, "Failed ");
-      throw error;
+    } catch (err) {
+      response["error"] = err;
+      logger("ERROR", err, "Failed ");
+      throw { err, response };
     }
   }
 

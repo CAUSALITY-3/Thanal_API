@@ -5,6 +5,8 @@ import { Product } from "./model/products";
 import { productFeatures } from "./model/productFeatures";
 import { productMainList } from "./model/productMainList";
 import { ProductFeatureServices } from "./services/productFeatures";
+import { UserServices } from "./services/users";
+import { User } from "./model/user";
 
 console.log("injectServices");
 
@@ -18,4 +20,7 @@ export async function injectServices() {
     productFeatureServices
   );
   Injector.bind(productService, "productService");
+
+  const userServices = new UserServices(User);
+  Injector.bind(userServices, "userServices");
 }
