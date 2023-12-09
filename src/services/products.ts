@@ -69,7 +69,7 @@ export class ProductServices {
       description,
       price,
       image,
-      inventory,
+      stock,
       ratings,
       family,
     } = product;
@@ -85,7 +85,7 @@ export class ProductServices {
             description,
             price,
             image,
-            inventory,
+            stock,
             ratings,
           },
         },

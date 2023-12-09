@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Apple\",\r\n  \"priority\":5,\r\n  \"description\": \"Product Description\",\r\n  \"price\": 99.99,\r\n  \"category\": \"Fruits\",\r\n  \"inventory\": 100,\r\n  \"image\": \"https://shop.organicmandya.com/cdn/shop/products/1DGxnvg206vOEx3BLPuxJQJBKyZWPYJDR_9d12e40f-d94c-4566-bc42-85f57dd16a64_1051x700.jpg?v=1608550655\",\r\n  \"features\": {\r\n      \"color\": \"red\"\r\n  },\r\n  \"ratings\": {\r\n    \"average\": 4.5,\r\n    \"count\": 100\r\n  },\r\n  \"reviews\": [\r\n    {\r\n      \"customer\": \"customer_id_1\",\r\n      \"rating\": 4,\r\n      \"comment\": \"Great product!\",\r\n      \"reviewDate\": \"2023-08-05T14:30:00Z\"\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"name\": \"Apple\",\r\n  \"priority\":5,\r\n  \"description\": \"Product Description\",\r\n  \"price\": 99.99,\r\n  \"category\": \"Fruits\",\r\n  \"stock\": 100,\r\n  \"image\": \"https://shop.organicmandya.com/cdn/shop/products/1DGxnvg206vOEx3BLPuxJQJBKyZWPYJDR_9d12e40f-d94c-4566-bc42-85f57dd16a64_1051x700.jpg?v=1608550655\",\r\n  \"features\": {\r\n      \"color\": \"red\"\r\n  },\r\n  \"ratings\": {\r\n    \"average\": 4.5,\r\n    \"count\": 100\r\n  },\r\n  \"reviews\": [\r\n    {\r\n      \"customer\": \"customer_id_1\",\r\n      \"rating\": 4,\r\n      \"comment\": \"Great product!\",\r\n      \"reviewDate\": \"2023-08-05T14:30:00Z\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -141,7 +141,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"ratings\": {\r\n        \"average\": 4.5,\r\n        \"count\": 100\r\n    },\r\n    \"productId\": \"64d351764a3604adae2888ee\",\r\n    \"category\": \"Fruits\",\r\n    \"name\": \"Apple\",\r\n    \"description\": \"Product Description\",\r\n    \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n    \"price\": 99.99,\r\n    \"inventory\": 100,\r\n    \"_id\": \"64d4bc9467a7a7c927581771\"\r\n}",
+					"raw": "{\r\n    \"ratings\": {\r\n        \"average\": 4.5,\r\n        \"count\": 100\r\n    },\r\n    \"productId\": \"64d351764a3604adae2888ee\",\r\n    \"category\": \"Fruits\",\r\n    \"name\": \"Apple\",\r\n    \"description\": \"Product Description\",\r\n    \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtCh17cCUl3OeiiqnqYb72OPfHLLRVte3sg5Lz5duGg&s\",\r\n    \"price\": 99.99,\r\n    \"stock\": 100,\r\n    \"_id\": \"64d4bc9467a7a7c927581771\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -4,10 +4,10 @@ const logType = {
   WARN: 33,
 };
 
-function logger(type, data, message?) {
+export function logger(type?, data?, message?) {
   console.log(
     `\x1b[${logType[type] || 33}m%s\x1b[0m`,
-    `[${type || "INFO"}] ${new Date().toISOString()} : ${message || ""}=> `,
+    `[${type || "INFO"}] ${new Date().toISOString()} : ${message || ""}=>`,
     JSON.stringify(data)
   );
 }
@@ -21,7 +21,7 @@ export function Log(originalMethod: any, context: ClassMethodDecoratorContext) {
     const obj = {
       component: this.constructor.name,
       function: methodName,
-      input: args,
+      requestBody: args,
     };
     logger("INFO", obj, "Requesting ");
     try {
@@ -30,7 +30,7 @@ export function Log(originalMethod: any, context: ClassMethodDecoratorContext) {
       logger("INFO", obj, "Success ");
       return result;
     } catch (error) {
-      obj["reponse"] = error;
+      obj["error"] = error;
       logger("ERROR", error, "Failed ");
       throw error;
     }

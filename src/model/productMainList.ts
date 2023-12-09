@@ -34,7 +34,7 @@ const productMainListSchema = new mongoose.Schema({
         min: 0,
         required: true,
       },
-      inventory: {
+      stock: {
         type: Number,
         min: 0,
         required: true,
