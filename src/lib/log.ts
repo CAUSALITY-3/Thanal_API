@@ -12,29 +12,31 @@ export function logger(type?, data?, message?) {
   );
 }
 
-export function Log(originalMethod: any, context: ClassMethodDecoratorContext) {
-  const methodName = String(context.name);
-  async function replacementMethod(this: any, ...args: any[]) {
-    if (process.env.LOGGING_DISABLED)
-      return await originalMethod.call(this, ...args);
+export function Log(tata?) {
+  return function (originalMethod: any, context: ClassMethodDecoratorContext) {
+    const methodName = String(context.name);
+    async function replacementMethod(this: any, ...args: any[]) {
+      if (process.env.LOGGING_DISABLED)
+        return await originalMethod.call(this, ...args);
 
-    const response = {
-      component: this.constructor.name,
-      function: methodName,
-      requestBody: args,
-    };
-    logger("INFO", response, "Requesting ");
-    try {
-      const result = await originalMethod.call(this, ...args);
-      response["reponse"] = result;
-      logger("INFO", response, "Success ");
-      return result;
-    } catch (err) {
-      response["error"] = err;
-      logger("ERROR", err, "Failed ");
-      throw { err, response };
+      const response = {
+        component: this.constructor.name,
+        function: methodName,
+        requestBody: args,
+      };
+      logger("INFO", response, "Requesting ");
+      try {
+        const result = await originalMethod.call(this, ...args);
+        response["reponse"] = result;
+        logger("INFO", response, "Success ");
+        return result;
+      } catch (err) {
+        response["error"] = err;
+        logger("ERROR", err, "Failed ");
+        throw { err, response };
+      }
     }
-  }
 
-  return replacementMethod;
+    return replacementMethod;
+  };
 }

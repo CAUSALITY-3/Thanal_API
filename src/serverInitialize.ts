@@ -14,6 +14,7 @@ export async function initializeServer() {
 
   app.use("/products", require("./routes/products"));
   app.use("/features", require("./routes/productFeatures"));
+  app.use("/authenticate", require("./routes/authentication"));
   app.use("/users", require("./routes/users"));
 
   app.use(errorHandler);

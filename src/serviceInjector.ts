@@ -7,6 +7,7 @@ import { productMainList } from "./model/productMainList";
 import { ProductFeatureServices } from "./services/productFeatures";
 import { UserServices } from "./services/users";
 import { User } from "./model/user";
+import { AuthenticationServices } from "./services/authentication";
 
 console.log("injectServices");
 
@@ -23,4 +24,13 @@ export async function injectServices() {
 
   const userServices = new UserServices(User);
   Injector.bind(userServices, "userServices");
+
+  const authenticationServices = new AuthenticationServices(
+    userServices,
+    process.env.TOKEN_SECRET,
+    process.env.TOKEN_EXPIRY,
+    process.env.REFRESH_TOKEN_SECRET,
+    process.env.REFRESH_TOKEN_EXPIRY
+  )
+  Injector.bind(authenticationServices, "authenticationServices");
 }

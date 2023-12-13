@@ -7,7 +7,7 @@ const constants = {
 };
 
 export const errorHandler = ({ err, response }, req, res, next) => {
-  const statusCode = err.statusCode ? err.statusCode : 500;
+  const statusCode = err?.statusCode ? err.statusCode : 500;
   const returnObj = {
     title: "",
     message: err?.message,

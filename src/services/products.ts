@@ -10,19 +10,19 @@ export class ProductServices {
     private ProductFeatureServices: ProductFeatureServices
   ) {}
 
-  @Log
+  @Log()
   public async getProductById(id) {
     const product = await this.Product.findById(id);
     if (product?._id) return product;
     return "Product is no more available.";
   }
 
-  @Log
+  @Log()
   async getProductMainList() {
     return await this.ProductMainList.find();
   }
 
-  @Log
+  @Log()
   async createProduct(data) {
     const product = await this.Product.create(data);
     if (product?._id) {
@@ -34,7 +34,7 @@ export class ProductServices {
     return product;
   }
 
-  @Log
+  @Log()
   async findProductFromMainList(product) {
     const { family, category, name } = product;
     return await this.ProductMainList.find({
@@ -43,7 +43,7 @@ export class ProductServices {
     });
   }
 
-  @Log
+  @Log()
   async removeProductFromMainList(product) {
     const { name, category, family } = product;
     return await this.ProductMainList.findOneAndUpdate(
@@ -53,7 +53,7 @@ export class ProductServices {
     );
   }
 
-  @Log
+  @Log()
   async updateProductFromMainList(product) {
     const {
       _id,
@@ -88,7 +88,7 @@ export class ProductServices {
     );
   }
 
-  @Log
+  @Log()
   async updateProductById(id, body) {
     const product = await this.Product.findByIdAndUpdate(
       id,
@@ -101,7 +101,7 @@ export class ProductServices {
     return product;
   }
 
-  @Log
+  @Log()
   async deleteProductById(id) {
     const product = await this.Product.findByIdAndDelete(id, { new: true });
     if (product?._id) {
@@ -117,7 +117,7 @@ export class ProductServices {
     return product;
   }
 
-  @Log
+  @Log()
   async featureUpdate(product, add, remove) {
     if (Array.isArray(product?.features) && product.features.length) {
       const { family, _id, features } = product;
@@ -131,7 +131,7 @@ export class ProductServices {
     }
   }
 
-  @Log
+  @Log()
   async updateOrAddField(body) {
     const product = await this.Product.updateMany(
       {},
