@@ -26,4 +26,10 @@ export class ProductFeatureServices {
     );
     return response;
   }
+
+  @Log()
+  async getFeature(family) {
+    const response = await this.productFeatures.find({ family });
+    return response;
+  }
 }

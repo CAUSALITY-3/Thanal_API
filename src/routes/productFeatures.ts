@@ -10,6 +10,16 @@ const productFeatureServices: ProductFeatureServices = Injector.get(
   "productFeatureServices"
 );
 
+router.get(
+  "/getFeature",
+  asyncHandler(async (req, res) => {
+    const family = req.query.family || req.body.family;
+    const feature = await productFeatureServices.getFeature(family);
+    res.send(feature);
+  })
+);
+
+
 router.post(
   "/addFeature",
   asyncHandler(async (req, res) => {
