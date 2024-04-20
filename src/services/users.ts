@@ -11,13 +11,27 @@ export class UserServices {
   }
 
   @Log()
-  public async updateUser(id, data) {
+  public async upsertUser(data) {
+    console.log("hasan", data)
+    if(!data?.email) throw "User email not provided"
+    const {name, email, picture: profilePic} = data;
+    return await this.User.findOneAndUpdate({email}, {lastLoggedIn: new Date(), updatedAt: new Date(), name, email, profilePic}, { upsert: true, new: true });
+  }
+
+  @Log()
+  public async updateUserById(id, data) {
     return await this.User.findByIdAndUpdate(id, data, { new: true });
   }
 
   @Log()
-  public async getUser(query) {
-    return await this.User.find(query);
+  public async getUserByQuery(query) {
+    const result = await this.User.find(query);
+    return result.length ? result[0] : null;
+  }
+
+  @Log()
+  public async getAllUsers() {
+    return await this.User.find();
   }
 
   @Log()

@@ -20,27 +20,37 @@ router.post(
   })
 );
 
+router.post(
+  "/upsertUser",
+  asyncHandler(async (req, res) => {
+    const user = await userServices.upsertUser(req.body);
+    res.send(user);
+  })
+);
+
 router.put(
   "/update",
   asyncHandler(async (req, res) => {
     const id = req.query.id || req.body.id;
-    const user = await userServices.updateUser(id, req.body);
+    const user = await userServices.updateUserById(id, req.body);
     res.send(user);
   })
 );
 
 router.get(
-  "/getUser",
+  "/getUserByEmail",
   asyncHandler(async (req, res) => {
-    const id = req.query.id || req.body.id;
-    let query;
-    if (id) {
-      query = { _id: id };
-    } else {
-      query = req.body;
-    }
-    const user = await userServices.getUser(query);
+    const email = req.query.email || req.body.email;
+    const user = await userServices.getUserByQuery({email});
     res.send(user);
+  })
+);
+
+router.get(
+  "/getAllUsers",
+  asyncHandler(async (req, res) => {
+    const users = await userServices.getAllUsers();
+    res.send(users);
   })
 );
 

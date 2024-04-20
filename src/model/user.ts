@@ -30,21 +30,20 @@ const addressSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  firstName: {
+  name: {
     type: String,
     required: true,
     trim: true,
   },
-  lastName: String,
-  phone: {
-    type: String || Number,
+  email: {
+    type: String,
     required: true,
     index: true,
     unique: true,
   },
+  profilePic: String,
   password: {
     type: String,
-    required: true,
   },
   address: addressSchema,
   profilePicture: String,
@@ -56,9 +55,17 @@ const userSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  bag: {
+    type: [String],
+    default: [],
+  },
   createdAt: {
     type: Date,
     immutable: true,
+    default: () => Date.now(),
+  },
+  lastLoggedIn: {
+    type: Date,
     default: () => Date.now(),
   },
   updatedAt: {
