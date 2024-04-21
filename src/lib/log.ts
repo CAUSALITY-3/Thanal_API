@@ -7,7 +7,7 @@ const logType = {
 export function logger(type?, data?, message?) {
   console.log(
     `\x1b[${logType[type] || 33}m%s\x1b[0m`,
-    `[${type || "INFO"}] ${new Date().toISOString()} : ${message || ""}=>`,
+    `[${type || "INFO"}] ${new Date().toLocaleString()} : ${message || ""}=>`,
     JSON.stringify(data)
   );
 }
