@@ -12,10 +12,14 @@ export async function initializeServer() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
+  app.get("/thanal", (req, res)=> {
+    res.send("Thanal is unning!!!")
+  })
   app.use("/products", require("./routes/products"));
   app.use("/features", require("./routes/productFeatures"));
   app.use("/authenticate", require("./routes/authentication"));
   app.use("/users", require("./routes/users"));
+  app.use("/images", require("./routes/images"));
 
   app.use(errorHandler);
 

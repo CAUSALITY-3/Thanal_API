@@ -8,6 +8,7 @@ import { ProductFeatureServices } from "./services/productFeatures";
 import { UserServices } from "./services/users";
 import { User } from "./model/user";
 import { AuthenticationServices } from "./services/authentication";
+import { ImageServices } from "./services/images";
 
 console.log("injectServices");
 
@@ -33,4 +34,7 @@ export async function injectServices() {
     process.env.REFRESH_TOKEN_EXPIRY
   )
   Injector.bind(authenticationServices, "authenticationServices");
+
+  const imageServices = new ImageServices()
+  Injector.bind(imageServices, "imageServices");
 }
