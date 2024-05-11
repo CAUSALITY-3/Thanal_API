@@ -23,6 +23,11 @@ export class ProductServices {
   }
 
   @Log()
+  async getAllUnderFamily(family) {
+    return await this.Product.find({family});
+  }
+
+  @Log()
   async createProduct(data) {
     const product = await this.Product.create(data);
     if (product?._id) {

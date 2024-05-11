@@ -48,6 +48,15 @@ router.get(
   })
 );
 
+router.get(
+  "/getAllUnderFamily",
+  asyncHandler(async (req, res) => {
+    const family = req.query.family || req.body.family;
+    const product = await productService.getAllUnderFamily(family);
+    res.send(product);
+  })
+);
+
 router
   .route("/product")
   .get(
