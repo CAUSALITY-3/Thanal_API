@@ -20,6 +20,7 @@ export async function initializeServer() {
   app.use("/authenticate", require("./routes/authentication"));
   app.use("/users", require("./routes/users"));
   app.use("/images", require("./routes/images"));
+  app.use("/payments", require("./routes/payments"));
 
   app.use(errorHandler);
 

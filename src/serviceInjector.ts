@@ -1,6 +1,5 @@
 import { Injector } from "./lib/injector";
 import { ProductServices } from "./services/products";
-
 import { Product } from "./model/products";
 import { productFeatures } from "./model/productFeatures";
 import { productMainList } from "./model/productMainList";
@@ -9,6 +8,8 @@ import { UserServices } from "./services/users";
 import { User } from "./model/user";
 import { AuthenticationServices } from "./services/authentication";
 import { ImageServices } from "./services/images";
+import Razorpay  from "razorpay";
+import { PaymentServices } from "./services/payments";
 
 console.log("injectServices");
 
@@ -37,4 +38,12 @@ export async function injectServices() {
 
   const imageServices = new ImageServices()
   Injector.bind(imageServices, "imageServices");
+
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY,
+    key_secret: process.env.RAZORPAY_SECRET,
+  });
+
+  const paymentServices = new PaymentServices(razorpay);
+  Injector.bind(paymentServices, "paymentServices");
 }
