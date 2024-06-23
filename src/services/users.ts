@@ -19,8 +19,8 @@ export class UserServices {
   }
 
   @Log()
-  public async updateUserById(id, data) {
-    return await this.User.findByIdAndUpdate(id, data, { new: true });
+  public async updateUserByQuery(query, data) {
+    return await this.User.findOneAndUpdate(query, {updatedAt: new Date(), ...data}, { new: true });
   }
 
   @Log()

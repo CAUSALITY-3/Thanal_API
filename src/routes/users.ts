@@ -32,7 +32,12 @@ router.put(
   "/update",
   asyncHandler(async (req, res) => {
     const id = req.query.id || req.body.id;
-    const user = await userServices.updateUserById(id, req.body);
+    const email = req.query.email || req.body.email;
+    let queryData: {email?: string, id?: string} = { id };
+    if(email) {
+      queryData = {email}
+    }
+    const user = await userServices.updateUserByQuery(queryData, req.body);
     res.send(user);
   })
 );
