@@ -24,6 +24,11 @@ export class UserServices {
   }
 
   @Log()
+  public async addToBag(query, data) {
+    return await this.User.findOneAndUpdate(query, { $push: { bag: data.productId }, updatedAt: new Date()}, { new: true });
+  }
+
+  @Log()
   public async getUserByQuery(query) {
     const result = await this.User.find(query);
     return result.length ? result[0] : null;

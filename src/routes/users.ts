@@ -42,6 +42,16 @@ router.put(
   })
 );
 
+router.post(
+  "/addToBag",
+  asyncHandler(async (req, res) => {
+    const email = req.query.email || req.body.email;
+    const queryData: {email?: string} = { email };
+    const user = await userServices.addToBag(queryData, req.body);
+    res.send(user);
+  })
+);
+
 router.get(
   "/getUserByEmail",
   asyncHandler(async (req, res) => {
