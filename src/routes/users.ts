@@ -33,9 +33,9 @@ router.put(
   asyncHandler(async (req, res) => {
     const id = req.query.id || req.body.id;
     const email = req.query.email || req.body.email;
-    let queryData: {email?: string, id?: string} = { id };
-    if(email) {
-      queryData = {email}
+    let queryData: { email?: string; id?: string } = { id };
+    if (email) {
+      queryData = { email };
     }
     const user = await userServices.updateUserByQuery(queryData, req.body);
     res.send(user);
@@ -46,8 +46,11 @@ router.post(
   "/addToBag",
   asyncHandler(async (req, res) => {
     const email = req.query.email || req.body.email;
-    const queryData: {email?: string} = { email };
+    console.log("&&*&*&*&*&*&");
+    const queryData: { email?: string } = { email };
+
     const user = await userServices.addToBag(queryData, req.body);
+    res.cookie("user", JSON.stringify(user));
     res.send(user);
   })
 );
@@ -56,7 +59,7 @@ router.get(
   "/getUserByEmail",
   asyncHandler(async (req, res) => {
     const email = req.query.email || req.body.email;
-    const user = await userServices.getUserByQuery({email});
+    const user = await userServices.getUserByQuery({ email });
     res.send(user);
   })
 );

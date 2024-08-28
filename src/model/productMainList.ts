@@ -5,6 +5,7 @@ const productMainListSchema = new mongoose.Schema({
   type: {
     type: String,
   },
+  image: String,
   data: {
     type: Object,
     of: {

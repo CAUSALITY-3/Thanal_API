@@ -1,9 +1,11 @@
+import { Injector } from "../lib/injector";
 import { Log } from "../lib/log";
+import { User as UserModel } from "../model/user";
 
 console.log("UserServices");
 
 export class UserServices {
-  constructor(private User) {}
+  constructor(private User: typeof UserModel) {}
 
   @Log()
   public async createUser(data) {
@@ -12,20 +14,42 @@ export class UserServices {
 
   @Log()
   public async upsertUser(data) {
-    console.log("hasan", data)
-    if(!data?.email) throw "User email not provided"
-    const {name, email, picture: profilePic} = data;
-    return await this.User.findOneAndUpdate({email}, {lastLoggedIn: new Date(), updatedAt: new Date(), name, email, profilePic}, { upsert: true, new: true });
+    console.log("hasan", data);
+    if (!data?.email) throw "User email not provided";
+    const { name, email, picture: profilePic } = data;
+    return await this.User.findOneAndUpdate(
+      { email },
+      {
+        lastLoggedIn: new Date(),
+        updatedAt: new Date(),
+        name,
+        email,
+        profilePic,
+      },
+      { upsert: true, new: true }
+    );
   }
 
   @Log()
   public async updateUserByQuery(query, data) {
-    return await this.User.findOneAndUpdate(query, {updatedAt: new Date(), ...data}, { new: true });
+    return await this.User.findOneAndUpdate(
+      query,
+      { updatedAt: new Date(), ...data },
+      { new: true }
+    );
   }
 
   @Log()
   public async addToBag(query, data) {
-    return await this.User.findOneAndUpdate(query, { $push: { bag: data.productId }, updatedAt: new Date()}, { new: true });
+    const user = await this.User.findOneAndUpdate(
+      query,
+      { $push: { bag: data.productId }, updatedAt: new Date() },
+      { new: true }
+    );
+    const usersCache = Injector.get("usersCache");
+    usersCache[user.email] = user;
+    Injector.update(usersCache, "usersCache");
+    return user;
   }
 
   @Log()

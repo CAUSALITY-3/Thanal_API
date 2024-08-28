@@ -62,6 +62,7 @@ router
   .get(
     asyncHandler(async (req, res) => {
       const id = req.query.id || req.body.id;
+      console.log("sasas", id);
       const product = await productService.getProductById(id);
       res.send(product);
     })

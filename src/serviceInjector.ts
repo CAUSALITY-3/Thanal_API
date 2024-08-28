@@ -8,7 +8,7 @@ import { UserServices } from "./services/users";
 import { User } from "./model/user";
 import { AuthenticationServices } from "./services/authentication";
 import { ImageServices } from "./services/images";
-import Razorpay  from "razorpay";
+import Razorpay from "razorpay";
 import { PaymentServices } from "./services/payments";
 
 console.log("injectServices");
@@ -29,15 +29,21 @@ export async function injectServices() {
 
   const authenticationServices = new AuthenticationServices(
     userServices,
-    process.env.TOKEN_SECRET,
-    process.env.TOKEN_EXPIRY,
-    process.env.REFRESH_TOKEN_SECRET,
-    process.env.REFRESH_TOKEN_EXPIRY
-  )
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_CALLBACK_URL
+  );
   Injector.bind(authenticationServices, "authenticationServices");
 
-  const imageServices = new ImageServices()
+  const imageServices = new ImageServices();
   Injector.bind(imageServices, "imageServices");
+
+  const allUsers = await userServices.getAllUsers();
+  const usersCache = {};
+  for (const user of allUsers) {
+    usersCache[user.email] = user;
+  }
+  Injector.bind(usersCache, "usersCache");
 
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY,

@@ -24,7 +24,7 @@ export class ProductServices {
 
   @Log()
   async getAllUnderFamily(family) {
-    return await this.Product.find({family});
+    return await this.Product.find({ family });
   }
 
   @Log()
