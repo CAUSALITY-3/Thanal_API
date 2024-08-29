@@ -9,11 +9,9 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 require("./utils/auth");
 
-let cache = loadCache() || {};
-
-console.log("initializeServer");
-
 export async function initializeServer() {
+  let cache = (await loadCache()) || {};
+  console.log("initializeServer", Object.keys(cache).length);
   const app = express();
   app.use(cookieParser());
   app.use(

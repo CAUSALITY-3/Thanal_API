@@ -16,4 +16,16 @@ router.post(
   })
 );
 
+router.post(
+  "/verifyPayment",
+  asyncHandler(async (req, res) => {
+    const verified = await paymentServices.verifyPayment(req.body);
+    if (verified) {
+      res.status(200).send({ success: true });
+    } else {
+      res.status(400).send({ success: false });
+    }
+  })
+);
+
 module.exports = router;
