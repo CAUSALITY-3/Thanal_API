@@ -39,6 +39,20 @@ export class UserServices {
     );
   }
 
+  // @Log()
+  // public async updateUserByQuery(query, data: any) {
+  //   const addressUpdate = data.address
+  //     ? { $set: { address: data.address }, ...data }
+  //     : data;
+  //   const update = {
+  //     updatedAt: new Date(),
+  //     ...addressUpdate,
+  //   };
+
+  //   console.log("updateUserByQuery", update);
+  //   return await this.User.findOneAndUpdate(query, update, { new: true });
+  // }
+
   @Log()
   public async addToBag(query, data) {
     const user = await this.User.findOneAndUpdate(

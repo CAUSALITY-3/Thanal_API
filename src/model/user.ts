@@ -7,17 +7,13 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  street: {
+  landmark: {
     type: String,
     required: true,
   },
   city: {
     type: String,
     required: true,
-  },
-  district: {
-    type: String,
-    default: process.env.DEFAULT_CITY || "",
   },
   state: {
     type: String,
@@ -51,7 +47,10 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   address: addressSchema,
-  deliveryAddress: [addressSchema],
+  deliveryAddress: {
+    type: [{ name: String, address: addressSchema, phone: String }],
+    default: [],
+  },
   profilePicture: String,
   orders: {
     type: [String],
