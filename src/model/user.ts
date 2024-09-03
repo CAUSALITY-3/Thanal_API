@@ -41,11 +41,17 @@ const userSchema = new mongoose.Schema({
     index: true,
     unique: true,
   },
+  phone: {
+    type: String,
+    index: true,
+    unique: true,
+  },
   profilePic: String,
   password: {
     type: String,
   },
   address: addressSchema,
+  deliveryAddress: [addressSchema],
   profilePicture: String,
   orders: {
     type: [String],

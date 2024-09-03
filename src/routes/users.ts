@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/utilFunctions";
 import { UserServices } from "../services/users";
 import { Injector } from "../lib/injector";
 import { AuthenticationServices } from "../services/authentication";
+import { updateUsersCache } from "../utils/usersCache";
 
 console.log("userRoute");
 const router = express.Router();
@@ -12,11 +13,25 @@ const authenticationServices: AuthenticationServices = Injector.get(
   "authenticationServices"
 );
 
+router.use((req, res, next) => {
+  if (["PUT", "POST"].includes(req.method)) {
+    // Get the latest cookie
+    res["refreshCacheAndSend"] = (user) => {
+      console.log("refreshCacheAndSend", user);
+      updateUsersCache(user);
+      res.cookie("user", JSON.stringify(user));
+      res.send(user);
+    };
+  }
+
+  next();
+});
+
 router.post(
   "/new",
   asyncHandler(async (req, res) => {
     const user = await userServices.createUser(req.body);
-    res.send(user);
+    res.refreshCacheAndSend(user);
   })
 );
 
@@ -24,7 +39,7 @@ router.post(
   "/upsertUser",
   asyncHandler(async (req, res) => {
     const user = await userServices.upsertUser(req.body);
-    res.send(user);
+    res.refreshCacheAndSend(user);
   })
 );
 
@@ -38,7 +53,7 @@ router.put(
       queryData = { email };
     }
     const user = await userServices.updateUserByQuery(queryData, req.body);
-    res.send(user);
+    res.refreshCacheAndSend(user);
   })
 );
 
@@ -50,8 +65,7 @@ router.post(
     const queryData: { email?: string } = { email };
 
     const user = await userServices.addToBag(queryData, req.body);
-    res.cookie("user", JSON.stringify(user));
-    res.send(user);
+    res.refreshCacheAndSend(user);
   })
 );
 
@@ -81,4 +95,5 @@ router.get(
     res.send(user);
   })
 );
+
 module.exports = router;

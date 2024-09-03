@@ -14,3 +14,9 @@ export async function refreshUsersCache() {
   }
   Injector.update(usersCache, "usersCache");
 }
+
+export function updateUsersCache(user) {
+  const usersCache = Injector.get("usersCache");
+  usersCache[user.email] = user;
+  Injector.update(usersCache, "usersCache");
+}

@@ -43,7 +43,7 @@ router.get(
       const user = req["user"];
       console.log("$$$$$$$", { user });
       res.cookie("user", JSON.stringify(user));
-      res.redirect("/logedIn");
+      res.redirect("/signup");
     } catch (err) {
       console.log("*******", { err });
     }
