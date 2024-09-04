@@ -1,6 +1,7 @@
 import axios from "axios";
 import url from "url";
 import fs from "fs";
+import { loadCache } from "./loadCache";
 
 export async function redirect(req, res, cache) {
   try {
@@ -74,5 +75,24 @@ export async function writeCacheToFile(cache, res) {
   } catch (err) {
     console.log(err);
     res.send("Error writing file");
+  }
+}
+
+export async function writeCacheViaApi(data, res) {
+  try {
+    // Parse the JSON data
+    fs.writeFile("cacheData.txt", JSON.stringify(data), async (err) => {
+      if (err) {
+        console.error("Error writing file:");
+        res.send("Error writing file");
+      } else {
+        console.log("File written successfully");
+        await loadCache();
+        res.send("File written successfully");
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return {};
   }
 }

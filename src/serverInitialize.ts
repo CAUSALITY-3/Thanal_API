@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { errorHandler } from "./utils/errorHandler";
 import { loadCache } from "./utils/loadCache";
-import { redirect, writeCacheToFile } from "./utils/redirect";
+import { redirect, writeCacheToFile, writeCacheViaApi } from "./utils/redirect";
 import { usersCache } from "./utils/usersCache";
 import passport from "passport";
 import session from "express-session";
@@ -39,6 +39,11 @@ export async function initializeServer() {
   });
   app.get("/writeCache", async (req, res) => {
     await writeCacheToFile(cache, res);
+  });
+  app.post("/writeCache", async (req, res) => {
+    console.log("+++++++", "writeCache");
+    const data = req.body;
+    await writeCacheViaApi(data, res);
   });
   app.get("/getUsersCache", async (req, res) => {
     const data = await usersCache();
