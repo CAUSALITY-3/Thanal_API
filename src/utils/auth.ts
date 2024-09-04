@@ -8,12 +8,13 @@ const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
+const callbackURL = process.env.GOOGLE_CALLBACK_URL as string;
 passport.use(
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:5000/thanalApi/auth/google/callback",
+      callbackURL: callbackURL,
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {
