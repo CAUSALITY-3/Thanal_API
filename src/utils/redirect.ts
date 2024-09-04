@@ -8,7 +8,12 @@ export async function redirect(req, res, cache) {
     const disablecache = false;
     const parsedUrl = url.parse(req.url, true);
     console.log(`Incoming request: ${req.method} ${parsedUrl.path}`);
-    console.log("############", cache);
+    // console.log("############", cache);
+    const formattedPath =
+      parsedUrl.path.includes("?_rsc=") &&
+      !parsedUrl.path.includes("?_rsc=acgkz")
+        ? parsedUrl.path.split("?_rsc=")[0] + "?_rsc="
+        : parsedUrl.path;
     const cacheKey = req.method + parsedUrl.path;
     const cacheData = cache[cacheKey];
     if (disablecache) {
@@ -25,19 +30,21 @@ export async function redirect(req, res, cache) {
     } else {
       if (cacheData) {
         // console.log("From cache, &&&&&&&&&&", Buffer.isBuffer(cacheData));
-        if (Buffer.isBuffer(cacheData)) {
-          res.end(cacheData);
+        if (Buffer.isBuffer(cacheData.data)) {
+          res.writeHead(cacheData.status, cacheData.headers);
+          res.end(cacheData.data);
         } else {
-          const buffData = new Buffer(cacheData.data);
+          const buffData = new Buffer(cacheData.data.data);
+          res.writeHead(cacheData.status, cacheData.headers);
           res.end(buffData);
         }
       } else {
         let user = req?.cookies?.user;
         if (user && typeof user === "string") {
           user = JSON.parse(user);
-          console.log("$$$$$$$$$", user.email);
+          // console.log("$$$$$$$$$", user.email);
         }
-        console.log("$$$$$$$$$", user?.email);
+        // console.log("$$$$$$$$$", user?.email);
         const targetUrl = `http://${process.env.THANAL_URL}:${process.env.THANAL_NEXT_PORT}${parsedUrl.path}`;
         const response = await axios({
           method: req.method,
@@ -49,7 +56,11 @@ export async function redirect(req, res, cache) {
         res.writeHead(response.status, response.headers);
         res.end(response.data);
         console.log("Adding to cache", parsedUrl.path);
-        cache[cacheKey] = response.data;
+        cache[cacheKey] = {
+          data: response.data,
+          status: response.status,
+          headers: response.headers,
+        };
       }
     }
   } catch (error) {

@@ -7,6 +7,7 @@ import { usersCache } from "./utils/usersCache";
 import passport from "passport";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+const path = require("path");
 require("./utils/auth");
 
 export async function initializeServer() {
@@ -34,6 +35,7 @@ export async function initializeServer() {
   //   next();
   // });
 
+  app.use("/_next/static", express.static(path.join(__dirname, "../static")));
   app.get("/thanal", (req, res) => {
     res.send("Thanal is unning!!!");
   });
