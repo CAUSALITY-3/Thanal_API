@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 export async function loadCache() {
   try {
-    const data = await fs.readFile("./cacheData.txt", "utf8");
+    const data = await fs.readFile("./cacheData.json", "utf8");
 
     // Parse the JSON data
     try {

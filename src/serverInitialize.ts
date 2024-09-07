@@ -58,8 +58,9 @@ export async function initializeServer() {
     res.send(keys);
   });
   app.get("/generateAndLoadCache", async (req, res) => {
-    await generateAndLoadCache();
-    res.send("done");
+    const data = await generateAndLoadCache();
+    cache = data;
+    res.send(data);
   });
   app.get("/getUsersCache", async (req, res) => {
     const data = await usersCache();

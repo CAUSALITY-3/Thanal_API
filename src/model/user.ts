@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     index: true,
     unique: true,
+    sparse: true,
   },
   profilePic: String,
   password: {

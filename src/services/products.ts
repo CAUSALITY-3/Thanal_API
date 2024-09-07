@@ -23,6 +23,11 @@ export class ProductServices {
   }
 
   @Log()
+  async getAllProducts() {
+    return await this.Product.find({}, { family: 1, _id: 1, name: 1 });
+  }
+
+  @Log()
   async getAllUnderFamily(family) {
     return await this.Product.find({ family });
   }
