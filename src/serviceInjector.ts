@@ -10,6 +10,8 @@ import { AuthenticationServices } from "./services/authentication";
 import { ImageServices } from "./services/images";
 import Razorpay from "razorpay";
 import { PaymentServices } from "./services/payments";
+import { UploadServices } from "./services/uploads";
+import { loadCache } from "./utils/loadCache";
 
 console.log("injectServices");
 
@@ -52,4 +54,9 @@ export async function injectServices() {
 
   const paymentServices = new PaymentServices(razorpay);
   Injector.bind(paymentServices, "paymentServices");
+
+  const uploadServices = new UploadServices();
+  Injector.bind(uploadServices, "uploadServices");
+
+  await loadCache();
 }

@@ -1,14 +1,15 @@
 import axios from "axios";
 import url from "url";
 import fs from "fs/promises";
-import { loadCache } from "./loadCache";
 import path from "path";
 import { Injector } from "../lib/injector";
 import { ProductServices } from "../services/products";
+import { loadCache } from "./loadCache";
 
-export async function redirect(req, res, cache) {
+export async function redirect(req, res) {
   try {
     const disablecache = false;
+    const cache = Injector.get("cache");
     const parsedUrl = url.parse(req.url, true);
     console.log(`Incoming request: ${req.method} ${parsedUrl.path}`);
     // console.log("############", cache);
@@ -75,24 +76,17 @@ export async function redirect(req, res, cache) {
   }
 }
 
-export async function writeCacheToFile(cache, res) {
+export async function writeCacheToFile() {
   try {
-    await fs.writeFile("cacheData.json", JSON.stringify(cache), "utf-8");
-    res.send("File written successfully");
+    await fs.writeFile(
+      "cacheData.json",
+      JSON.stringify(Injector.get("cache")),
+      "utf-8"
+    );
+    return "File written successfully";
   } catch (err) {
     console.log(err);
-    res.send("Error writing file");
-  }
-}
-
-export async function writeCacheViaApi(data, res) {
-  try {
-    // Parse the JSON data
-    await fs.writeFile("cacheData.json", JSON.stringify(data), "utf-8");
-    res.send("File written successfully");
-  } catch (error) {
-    console.log(error);
-    return {};
+    return "Error writing file";
   }
 }
 
@@ -226,15 +220,17 @@ export async function generateAndLoadCache() {
     await fs.rm(destBasePath, { recursive: true, force: true });
     console.log(`Deleted all files and folders inside ${destBasePath}`);
     await copyDirectory(staticDirectory, destBasePath);
-    const routDirectory = path.join(sourceBasePath, "/server/app");
-    await loadRouteCaches(routDirectory, newCache);
+    const routesDirectory = path.join(sourceBasePath, "/server/app");
+    await loadRouteCaches(routesDirectory, newCache);
     const productService: ProductServices = Injector.get("productService");
     const products = await productService.getAllProducts();
     await callAndGetCache(products, newCache);
     await fs.writeFile("cacheData.json", JSON.stringify(newCache), "utf-8");
-    return newCache;
+    await loadCache();
+    return "Cache generated and loaded";
   } catch (err) {
     console.log(err);
+    return { "Error generating and loading cache": err };
   }
 }
 

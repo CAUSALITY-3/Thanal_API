@@ -1,23 +1,22 @@
 import express from "express";
 import cors from "cors";
 import { errorHandler } from "./utils/errorHandler";
-import { loadCache } from "./utils/loadCache";
 import {
   generateAndLoadCache,
   redirect,
   writeCacheToFile,
-  writeCacheViaApi,
 } from "./utils/redirect";
 import { usersCache } from "./utils/usersCache";
 import passport from "passport";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import { Injector } from "./lib/injector";
+import { loadCache } from "./utils/loadCache";
 const path = require("path");
 require("./utils/auth");
 
 export async function initializeServer() {
-  let cache = (await loadCache()) || {};
-  console.log("initializeServer", Object.keys(cache).length);
+  console.log("initializeServer");
   const app = express();
   app.use(cookieParser());
   app.use(
@@ -35,32 +34,27 @@ export async function initializeServer() {
   app.use(cors());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  // app.use((req, res, next) => {
-
-  //   next();
-  // });
 
   app.use("/_next/static", express.static(path.join(__dirname, "../static")));
   app.get("/thanal", (req, res) => {
     res.send("Thanal is unning!!!");
   });
   app.get("/writeCache", async (req, res) => {
-    await writeCacheToFile(cache, res);
-  });
-  app.post("/writeCache", async (req, res) => {
-    console.log("+++++++", "writeCache");
-    const data = req.body;
-    await writeCacheViaApi(data, res);
+    const status = await writeCacheToFile();
+    res.send(status);
   });
   app.get("/getRedirectCache", async (req, res) => {
-    const keys = Object.keys(cache);
+    const keys = Object.keys(Injector.get("cache"));
     keys.sort((a, b) => a.localeCompare(b));
     res.send(keys);
   });
   app.get("/generateAndLoadCache", async (req, res) => {
-    const data = await generateAndLoadCache();
-    cache = data;
-    res.send(data);
+    const status = await generateAndLoadCache();
+    res.send(status);
+  });
+  app.get("/loadCache", async (req, res) => {
+    await loadCache();
+    res.send("Loaded");
   });
   app.get("/getUsersCache", async (req, res) => {
     const data = await usersCache();
@@ -68,7 +62,7 @@ export async function initializeServer() {
   });
   app.use(async (req, res, next) => {
     if (!req.path.startsWith("/thanalApi")) {
-      await redirect(req, res, cache);
+      await redirect(req, res);
     }
     next();
   });
@@ -78,7 +72,7 @@ export async function initializeServer() {
   app.use("/thanalApi/users", require("./routes/users"));
   app.use("/thanalApi/images", require("./routes/images"));
   app.use("/thanalApi/payments", require("./routes/payments"));
-
+  app.use("/thanalApi/upload", require("./routes/uploads"));
   app.use(errorHandler);
 
   app.listen(port, () => {

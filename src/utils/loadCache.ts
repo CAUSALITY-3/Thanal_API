@@ -1,5 +1,7 @@
 import fs from "fs/promises";
+import { Injector } from "../lib/injector";
 export async function loadCache() {
+  let cache = {};
   try {
     const data = await fs.readFile("./cacheData.json", "utf8");
 
@@ -7,13 +9,12 @@ export async function loadCache() {
     try {
       const apiResponse = JSON.parse(data);
       console.log("apiResponse", Object.keys(apiResponse).length);
-      return apiResponse || {};
+      cache = apiResponse || {};
     } catch (parseErr) {
       console.error("Error parsing JSON:", parseErr);
-      return {};
     }
   } catch (error) {
-    console.log(error);
-    return {};
+    console.log("Error reading file:", error);
   }
+  Injector.update(cache, "cache");
 }
