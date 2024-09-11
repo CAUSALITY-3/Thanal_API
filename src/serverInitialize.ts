@@ -35,7 +35,14 @@ export async function initializeServer() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.use("/_next/static", express.static(path.join(__dirname, "../static")));
+  app.use(
+    "/_next/static",
+    (req, res, next) => {
+      res.setHeader("content-encoding", "gzip");
+      next();
+    },
+    express.static(path.join(__dirname, "../static"))
+  );
   app.get("/thanal", (req, res) => {
     res.send("Thanal is unning!!!");
   });
