@@ -1,12 +1,15 @@
 import { ProductFeatureServices } from "./productFeatures";
 import { Log } from "../lib/log";
+import { productMainList } from "../model/productMainList";
+import { Product as ProductModel } from "../model/products";
+import { Types } from "mongoose";
 
 console.log("ProductServices");
 
 export class ProductServices {
   constructor(
-    private Product,
-    private ProductMainList,
+    private Product: typeof ProductModel,
+    private ProductMainList: typeof productMainList,
     private ProductFeatureServices: ProductFeatureServices
   ) {}
 
@@ -154,5 +157,60 @@ export class ProductServices {
     );
 
     return product;
+  }
+
+  @Log()
+  async getProductFullList() {
+    const mainList = await this.ProductMainList.find().lean();
+    const formattedList = mainList.map((list) => {
+      return {
+        category: list.type,
+        products: Object.keys(list.data).map((product) => {
+          return {
+            name: list.data[product].name,
+            family: product,
+          };
+        }),
+      };
+    });
+
+    const returnResult: {
+      category: string;
+      data: {
+        family: string;
+        products: {
+          name: string;
+          id: Types.ObjectId;
+          image: string;
+        }[];
+      }[];
+    }[] = [];
+    for (const list of formattedList) {
+      const { category, products } = list;
+      const productsUnderFamily = await Promise.all(
+        products.map(async (product) => {
+          return {
+            family: product.family,
+            products: await this.getAllUnderFamily(product.family),
+          };
+        })
+      );
+      const formattedProductUnderFamily = productsUnderFamily.map((product) => {
+        return {
+          family: product.family,
+          products: product.products.map((product) => {
+            return {
+              name: product.name,
+              id: product._id,
+              image: product.image,
+            };
+          }),
+        };
+      });
+
+      returnResult.push({ category, data: formattedProductUnderFamily });
+    }
+
+    return returnResult;
   }
 }

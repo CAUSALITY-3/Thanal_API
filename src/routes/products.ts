@@ -82,6 +82,14 @@ router
     })
   );
 
+router.get(
+  "/getProductFullList",
+  asyncHandler(async (req, res) => {
+    const result = await productService.getProductFullList();
+    res.send(result);
+  })
+);
+
 router.put(
   "/updateOrAddField",
   asyncHandler(async (req, res) => {
