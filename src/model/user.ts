@@ -19,7 +19,7 @@ const addressSchema = new mongoose.Schema({
     type: String,
     default: process.env.DEFAULT_DISTRICT || "",
   },
-  pinCode: {
+  pincode: {
     type: Number,
     required: true,
   },
