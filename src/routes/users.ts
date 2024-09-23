@@ -17,10 +17,6 @@ router.use((req, res, next) => {
   if (["PUT", "POST"].includes(req.method)) {
     // Get the latest cookie
     res["refreshCacheAndSend"] = (user) => {
-      console.log("refreshCacheAndSend", user, {
-        SameSite: "none",
-        Domain: process.env.THANAL_URL || "thanal.mooo.com",
-      });
       updateUsersCache(user);
       res.cookie("user", JSON.stringify(user));
       res.send(user);
