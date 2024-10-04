@@ -49,7 +49,32 @@ const userSchema = new mongoose.Schema({
   },
   address: addressSchema,
   deliveryAddress: {
-    type: [{ name: String, address: addressSchema, phone: String }],
+    type: [
+      {
+        name: String,
+        houseName: {
+          type: String,
+          required: true,
+        },
+        landmark: {
+          type: String,
+          required: true,
+        },
+        city: {
+          type: String,
+          required: true,
+        },
+        state: {
+          type: String,
+          default: process.env.DEFAULT_DISTRICT || "",
+        },
+        pincode: {
+          type: Number,
+          required: true,
+        },
+        phone: String,
+      },
+    ],
     default: [],
   },
   profilePicture: String,
