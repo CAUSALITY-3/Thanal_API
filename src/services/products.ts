@@ -2,7 +2,7 @@ import { ProductFeatureServices } from "./productFeatures";
 import { Log } from "../lib/log";
 import { productMainList } from "../model/productMainList";
 import { Product as ProductModel } from "../model/products";
-import { Types } from "mongoose";
+import { set, Types } from "mongoose";
 
 console.log("ProductServices");
 
@@ -15,6 +15,7 @@ export class ProductServices {
 
   @Log()
   public async getProductById(id) {
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     const product = await this.Product.findById(id);
     if (product?._id) return product;
     return "Product is no more available.";

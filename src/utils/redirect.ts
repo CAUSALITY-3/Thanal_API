@@ -224,6 +224,19 @@ async function callAndGetCache(products, cache) {
         },
         {
           method: "GET",
+          url: `http://localhost:3000/buy/${product._id}?_rsc=9ehs5`,
+          data: {},
+          headers: {
+            rsc: "1",
+          },
+        },
+        {
+          method: "GET",
+          url: `http://localhost:3000/buy/${product._id}`,
+          data: {},
+        },
+        {
+          method: "GET",
           url: `http://localhost:3000/products/family/${product.family}`,
           data: {},
         },
@@ -245,6 +258,8 @@ async function callAndGetCache(products, cache) {
       cache[`/products/family/${product.family}?_rsc`] = family_rsc.data;
       cache[`/products/${product._id}?_rsc`] = productId_rsc.data;
       cache[`/products/${product._id}`] = productIdResp.data;
+      cache[`/buy/${product._id}?_rsc`] = productId_rsc.data;
+      cache[`/buy/${product._id}`] = productIdResp.data;
       cache[`/products/family/${product.family}`] = familyResp.data;
       cache["/favicon.ico"] = favIcon.data;
     }
