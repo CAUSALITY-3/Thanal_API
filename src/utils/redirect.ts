@@ -224,7 +224,7 @@ async function callAndGetCache(products, cache) {
         },
         {
           method: "GET",
-          url: `http://localhost:3000/buy/${product._id}?_rsc=9ehs5`,
+          url: `http://localhost:3000/buy/${product._id}?_rsc=bpcc2`,
           data: {},
           headers: {
             rsc: "1",
@@ -253,13 +253,20 @@ async function callAndGetCache(products, cache) {
         { method: "GET", url: `http://localhost:3000/favicon.ico`, data: {} },
       ];
 
-      const [family_rsc, productId_rsc, familyResp, productIdResp, favIcon] =
-        await Promise.all(payloads.map((payload) => axios(payload)));
+      const [
+        family_rsc,
+        productId_rsc,
+        buyId_rsc,
+        buyResp,
+        familyResp,
+        productIdResp,
+        favIcon,
+      ] = await Promise.all(payloads.map((payload) => axios(payload)));
       cache[`/products/family/${product.family}?_rsc`] = family_rsc.data;
       cache[`/products/${product._id}?_rsc`] = productId_rsc.data;
       cache[`/products/${product._id}`] = productIdResp.data;
-      cache[`/buy/${product._id}?_rsc`] = productId_rsc.data;
-      cache[`/buy/${product._id}`] = productIdResp.data;
+      cache[`/buy/${product._id}?_rsc`] = buyId_rsc.data;
+      cache[`/buy/${product._id}`] = buyResp.data;
       cache[`/products/family/${product.family}`] = familyResp.data;
       cache["/favicon.ico"] = favIcon.data;
     }
