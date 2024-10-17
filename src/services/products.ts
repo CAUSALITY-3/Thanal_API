@@ -3,6 +3,7 @@ import { Log } from "../lib/log";
 import { productMainList } from "../model/productMainList";
 import { Product as ProductModel } from "../model/products";
 import { set, Types } from "mongoose";
+import { ObjectId } from "mongodb";
 
 console.log("ProductServices");
 
@@ -19,6 +20,11 @@ export class ProductServices {
     const product = await this.Product.findById(id);
     if (product?._id) return product;
     return "Product is no more available.";
+  }
+
+  @Log()
+  public async getProductByIds(body) {
+    return await this.Product.find({ _id: { $in: body.ids } });
   }
 
   @Log()

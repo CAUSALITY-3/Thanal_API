@@ -55,12 +55,15 @@ export class UserServices {
 
   @Log()
   public async addToBag(query, data) {
+    const usersCache = Injector.get("usersCache");
+    const userdata = usersCache[query.email];
+    if (userdata.bag.includes(data.productId)) return userdata;
+    usersCache[data.productId] = data;
     const user = await this.User.findOneAndUpdate(
       query,
       { $push: { bag: data.productId }, updatedAt: new Date() },
       { new: true }
     );
-    const usersCache = Injector.get("usersCache");
     usersCache[user.email] = user;
     Injector.update(usersCache, "usersCache");
     return user;

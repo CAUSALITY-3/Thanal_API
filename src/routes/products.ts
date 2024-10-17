@@ -57,6 +57,15 @@ router.get(
   })
 );
 
+router.post(
+  "/getProductByIds",
+  asyncHandler(async (req, res) => {
+    console.log("req.body", req.body);
+    const products = await productService.getProductByIds(req.body);
+    res.send(products);
+  })
+);
+
 router
   .route("/product")
   .get(
