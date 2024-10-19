@@ -58,12 +58,28 @@ export class UserServices {
     const usersCache = Injector.get("usersCache");
     const userdata = usersCache[query.email];
     if (userdata.bag.includes(data.productId)) return userdata;
-    usersCache[data.productId] = data;
     const user = await this.User.findOneAndUpdate(
       query,
       { $push: { bag: data.productId }, updatedAt: new Date() },
       { new: true }
     );
+    usersCache[user.email] = user;
+    Injector.update(usersCache, "usersCache");
+    return user;
+  }
+
+  public async removeFromBag(query, data) {
+    const user = await this.User.findOneAndUpdate(
+      query,
+      { $pull: { bag: data.productId }, updatedAt: new Date() },
+      { new: true }
+    );
+    console.log(
+      "???????????????????????????",
+      user.bag,
+      "??????????????????????????????????"
+    );
+    const usersCache = Injector.get("usersCache");
     usersCache[user.email] = user;
     Injector.update(usersCache, "usersCache");
     return user;

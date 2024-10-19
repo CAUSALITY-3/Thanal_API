@@ -60,10 +60,20 @@ router.post(
   "/addToBag",
   asyncHandler(async (req, res) => {
     const email = req.query.email || req.body.email;
-    console.log("&&*&*&*&*&*&");
     const queryData: { email?: string } = { email };
 
     const user = await userServices.addToBag(queryData, req.body);
+    res.refreshCacheAndSend(user);
+  })
+);
+
+router.post(
+  "/removeFromBag",
+  asyncHandler(async (req, res) => {
+    const email = req.query.email || req.body.email;
+    const queryData: { email?: string } = { email };
+
+    const user = await userServices.removeFromBag(queryData, req.body);
     res.refreshCacheAndSend(user);
   })
 );
