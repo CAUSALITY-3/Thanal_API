@@ -106,4 +106,13 @@ router.put(
     res.send(result);
   })
 );
+
+router.put(
+  "/updateProductsStock",
+  asyncHandler(async (req, res) => {
+    const result = await productService.updateProductsStock(req.body);
+    res.send(result);
+  })
+);
+
 module.exports = router;

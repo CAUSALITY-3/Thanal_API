@@ -122,6 +122,27 @@ export class ProductServices {
   }
 
   @Log()
+  async updateProductsStock(body) {
+    const updateApi = async (id, soldStock) => {
+      const product = await this.Product.findByIdAndUpdate(
+        id,
+        { $inc: { stock: -soldStock } },
+        { new: true }
+      );
+      if (product?._id) {
+        await this.updateProductFromMainList(product);
+      }
+      return product.toObject();
+    };
+    const promises = [];
+    for (const id in body) {
+      promises.push(updateApi(id, body[id]));
+    }
+
+    return await Promise.all(promises);
+  }
+
+  @Log()
   async deleteProductById(id) {
     const product = await this.Product.findByIdAndDelete(id, { new: true });
     if (product?._id) {

@@ -39,19 +39,28 @@ export class UserServices {
     );
   }
 
-  // @Log()
-  // public async updateUserByQuery(query, data: any) {
-  //   const addressUpdate = data.address
-  //     ? { $set: { address: data.address }, ...data }
-  //     : data;
-  //   const update = {
-  //     updatedAt: new Date(),
-  //     ...addressUpdate,
-  //   };
-
-  //   console.log("updateUserByQuery", update);
-  //   return await this.User.findOneAndUpdate(query, update, { new: true });
-  // }
+  @Log()
+  public async updateUserOrder(query, orderId, orderItems) {
+    const usersCache = Injector.get("usersCache");
+    const userdata = usersCache[query.email];
+    let bag = userdata.bag;
+    if (
+      (Object.keys(orderItems).length === 1 &&
+        userdata.bag.includes(Object.keys(orderItems)[0])) ||
+      Object.keys(orderItems).length > 1
+    ) {
+      bag = [];
+    }
+    if (userdata.orders.includes(orderId)) return userdata;
+    const user = await this.User.findOneAndUpdate(
+      query,
+      { $push: { orders: orderId }, $set: { bag }, updatedAt: new Date() },
+      { new: true }
+    );
+    usersCache[user.email] = user;
+    Injector.update(usersCache, "usersCache");
+    return user;
+  }
 
   @Log()
   public async addToBag(query, data) {

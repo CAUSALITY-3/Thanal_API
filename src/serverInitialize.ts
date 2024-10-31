@@ -80,6 +80,7 @@ export async function initializeServer() {
   app.use("/thanalApi/images", require("./routes/images"));
   app.use("/thanalApi/payments", require("./routes/payments"));
   app.use("/thanalApi/upload", require("./routes/uploads"));
+  app.use("/thanalApi/orders", require("./routes/orders"));
   app.use(errorHandler);
 
   app.listen(port, () => {
