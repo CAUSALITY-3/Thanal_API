@@ -78,6 +78,28 @@ router.post(
   })
 );
 
+router.post(
+  "/favoriteItem",
+  asyncHandler(async (req, res) => {
+    const email = req.query.email || req.body.email;
+    const queryData: { email?: string } = { email };
+
+    const user = await userServices.favoriteItem(queryData, req.body);
+    res.refreshCacheAndSend(user);
+  })
+);
+
+router.post(
+  "/unFavoriteItem",
+  asyncHandler(async (req, res) => {
+    const email = req.query.email || req.body.email;
+    const queryData: { email?: string } = { email };
+
+    const user = await userServices.unFavoriteItem(queryData, req.body);
+    res.refreshCacheAndSend(user);
+  })
+);
+
 router.get(
   "/getUserByEmail",
   asyncHandler(async (req, res) => {

@@ -43,14 +43,8 @@ export class UserServices {
   public async updateUserOrder(query, orderId, orderItems) {
     const usersCache = Injector.get("usersCache");
     const userdata = usersCache[query.email];
-    let bag = userdata.bag;
-    if (
-      (Object.keys(orderItems).length === 1 &&
-        userdata.bag.includes(Object.keys(orderItems)[0])) ||
-      Object.keys(orderItems).length > 1
-    ) {
-      bag = [];
-    }
+    const bag = userdata.bag.filter((item) => !orderItems[item]);
+
     if (userdata.orders.includes(orderId)) return userdata;
     const user = await this.User.findOneAndUpdate(
       query,
@@ -77,6 +71,7 @@ export class UserServices {
     return user;
   }
 
+  @Log()
   public async removeFromBag(query, data) {
     const user = await this.User.findOneAndUpdate(
       query,
@@ -86,6 +81,39 @@ export class UserServices {
     console.log(
       "???????????????????????????",
       user.bag,
+      "??????????????????????????????????"
+    );
+    const usersCache = Injector.get("usersCache");
+    usersCache[user.email] = user;
+    Injector.update(usersCache, "usersCache");
+    return user;
+  }
+
+  @Log()
+  public async favoriteItem(query, data) {
+    const usersCache = Injector.get("usersCache");
+    const userdata = usersCache[query.email];
+    if (userdata.wishlists.includes(data.productId)) return userdata;
+    const user = await this.User.findOneAndUpdate(
+      query,
+      { $push: { wishlists: data.productId }, updatedAt: new Date() },
+      { new: true }
+    );
+    usersCache[user.email] = user;
+    Injector.update(usersCache, "usersCache");
+    return user;
+  }
+
+  @Log()
+  public async unFavoriteItem(query, data) {
+    const user = await this.User.findOneAndUpdate(
+      query,
+      { $pull: { wishlists: data.productId }, updatedAt: new Date() },
+      { new: true }
+    );
+    console.log(
+      "???????????????????????????",
+      user.wishlists,
       "??????????????????????????????????"
     );
     const usersCache = Injector.get("usersCache");
