@@ -22,6 +22,7 @@ export class OrderServices {
       userEmail: email,
       totalPrice: totalAmount,
       orderItems: [],
+      deliveryAddress: data.deliveryAddress,
     };
     for (const product of products) {
       const { _id, name, images, price } = product;
@@ -46,5 +47,10 @@ export class OrderServices {
       };
     }
     return { user: null, order };
+  }
+
+  @Log()
+  public async getOrderByIds(body) {
+    return await this.Order.find({ _id: { $in: body.ids } });
   }
 }

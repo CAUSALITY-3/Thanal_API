@@ -17,4 +17,12 @@ router.post(
   })
 );
 
+router.post(
+  "/getOrderByIds",
+  asyncHandler(async (req, res) => {
+    const orders = await orderServices.getOrderByIds(req.body);
+    res.send(orders);
+  })
+);
+
 module.exports = router;

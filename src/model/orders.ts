@@ -47,6 +47,36 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: "In progress",
   },
+  deliveryAddress: {
+    type: {
+      name: String,
+      houseName: {
+        type: String,
+        required: true,
+      },
+      landmark: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        default: process.env.DEFAULT_DISTRICT || "",
+      },
+      pincode: {
+        type: Number,
+        required: true,
+      },
+      phone: {
+        type: String,
+        required: true,
+      },
+    },
+    required: true,
+  },
   orderDate: {
     type: Date,
     default: new Date(),
