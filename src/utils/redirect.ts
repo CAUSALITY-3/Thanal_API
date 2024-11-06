@@ -16,6 +16,8 @@ export async function redirect(req, res) {
     // console.log("############", cache);
     const formattedPath = parsedUrl.path.includes("?_rsc=")
       ? parsedUrl.path.split("?_rsc=")[0] + "?_rsc"
+      : parsedUrl.path.includes("?")
+      ? parsedUrl.path.split("?")[0]
       : parsedUrl.path;
     const cacheKey = formattedPath;
     const cacheData = cache[cacheKey];
@@ -93,8 +95,12 @@ export async function writeCacheToFile() {
 
 export async function generateAndLoadCache() {
   try {
-    const sourceBasePath = "C:/Users/abinb/Documents/site/Thanal/.next";
-    const destBasePath = "C:/Users/abinb/Documents/site/Thanal_API/static";
+    const sourceBasePath =
+      process.env.NEXT_BUILD_SOURCE_PATH ||
+      "C:/Users/abinb/Documents/site/Thanal/.next";
+    const destBasePath =
+      process.env.THANAL_API_CACHE_PATH ||
+      "C:/Users/abinb/Documents/site/Thanal_API/static";
     const staticDirectory = path.join(sourceBasePath, "/static");
     const newCache = {};
     await fs.promises.rm(destBasePath, { recursive: true, force: true });
