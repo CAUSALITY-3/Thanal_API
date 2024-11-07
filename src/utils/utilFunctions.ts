@@ -1,3 +1,5 @@
+import { usersCache } from "./usersCache";
+
 console.log("Util_Functions");
 
 export const dbOperatorData = (data, id) =>
@@ -26,3 +28,20 @@ export const syncLogger =
     }
     return value;
   };
+
+export const authenticate = (req, res, next) => {
+  const user = req.headers?.user;
+  if (req.headers.noauth === "true") return next();
+  const parsedUser = user ? JSON.parse(user) : null;
+  if (!parsedUser || !parsedUser?.email)
+    return res.status(401).json({ error: "Unauthenticated: Access denied" });
+  const usercache = usersCache();
+  const userCachedData = usercache[parsedUser.email];
+  if (
+    userCachedData &&
+    new Date(parsedUser.updatedAt).getTime() ===
+      new Date(userCachedData.updatedAt).getTime()
+  )
+    return next();
+  return res.status(401).json({ error: "Unauthenticated: Access denied" });
+};

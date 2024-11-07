@@ -1,7 +1,7 @@
 import { Injector } from "../lib/injector";
 import { UserServices } from "../services/users";
 
-export async function usersCache() {
+export function usersCache() {
   return Injector.get("usersCache");
 }
 

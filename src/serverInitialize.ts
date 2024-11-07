@@ -12,6 +12,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import { Injector } from "./lib/injector";
 import { loadCache } from "./utils/loadCache";
+import { authenticate } from "./utils/utilFunctions";
 const path = require("path");
 require("./utils/auth");
 
@@ -76,11 +77,11 @@ export async function initializeServer() {
   app.use("/thanalApi/products", require("./routes/products"));
   app.use("/thanalApi/features", require("./routes/productFeatures"));
   app.use("/thanalApi/auth", require("./routes/authentication"));
-  app.use("/thanalApi/users", require("./routes/users"));
+  app.use("/thanalApi/users", authenticate, require("./routes/users"));
   app.use("/thanalApi/images", require("./routes/images"));
-  app.use("/thanalApi/payments", require("./routes/payments"));
+  app.use("/thanalApi/payments", authenticate, require("./routes/payments"));
   app.use("/thanalApi/upload", require("./routes/uploads"));
-  app.use("/thanalApi/orders", require("./routes/orders"));
+  app.use("/thanalApi/orders", authenticate, require("./routes/orders"));
   app.use(errorHandler);
 
   app.listen(port, () => {
