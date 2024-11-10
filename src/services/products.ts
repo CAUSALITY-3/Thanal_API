@@ -2,8 +2,9 @@ import { ProductFeatureServices } from "./productFeatures";
 import { Log } from "../lib/log";
 import { productMainList } from "../model/productMainList";
 import { Product as ProductModel } from "../model/products";
-import { set, Types } from "mongoose";
-import { ObjectId } from "mongodb";
+import { Types } from "mongoose";
+import { Injector } from "../lib/injector";
+import { safelyGetFromCache } from "../utils/utilFunctions";
 
 console.log("ProductServices");
 
@@ -29,7 +30,16 @@ export class ProductServices {
 
   @Log()
   async getProductMainList() {
-    return await this.ProductMainList.find();
+    const cachedMainList = safelyGetFromCache("productMainListCache");
+    if (cachedMainList) return cachedMainList;
+    return await this.updateProductMainList();
+  }
+
+  @Log()
+  async updateProductMainList() {
+    const productMainList = await this.ProductMainList.find();
+    Injector.update(productMainList, "productMainListCache");
+    return productMainList;
   }
 
   @Log()
@@ -87,7 +97,7 @@ export class ProductServices {
       family,
     } = product;
 
-    return await this.ProductMainList.findOneAndUpdate(
+    const updatedList = await this.ProductMainList.findOneAndUpdate(
       { type: category },
       {
         $set: {
@@ -106,6 +116,8 @@ export class ProductServices {
       },
       { upsert: true, new: true }
     );
+    this.updateProductMainList();
+    return updatedList;
   }
 
   @Log()

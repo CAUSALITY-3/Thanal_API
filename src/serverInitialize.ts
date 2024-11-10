@@ -35,6 +35,11 @@ export async function initializeServer() {
   app.use(cors());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  // app.use((req, res, next) => {
+  //   setTimeout(() => {
+  //     next();
+  //   }, 0);
+  // });
 
   app.use(
     "/_next/static",

@@ -1,3 +1,4 @@
+import { Injector } from "../lib/injector";
 import { usersCache } from "./usersCache";
 
 console.log("Util_Functions");
@@ -44,4 +45,12 @@ export const authenticate = (req, res, next) => {
   )
     return next();
   return res.status(401).json({ error: "Unauthenticated: Access denied" });
+};
+
+export const safelyGetFromCache = (key, errorReplacer?) => {
+  try {
+    return Injector.get(key);
+  } catch (error) {
+    return errorReplacer || null;
+  }
 };
