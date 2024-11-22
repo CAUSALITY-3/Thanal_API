@@ -78,9 +78,12 @@ const productSchema = new mongoose.Schema({
   },
   reviews: [
     {
-      customer: String,
+      customer: {
+        name: String,
+        email: String,
+      },
       rating: Number,
-      comment: String,
+      review: String,
       reviewDate: Date,
     },
   ],

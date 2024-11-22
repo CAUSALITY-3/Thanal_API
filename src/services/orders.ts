@@ -53,4 +53,37 @@ export class OrderServices {
   public async getOrderByIds(body) {
     return await this.Order.find({ _id: { $in: body.ids } });
   }
+
+  @Log()
+  public async reviewOrders(body) {
+    const { orderId, review, rating, userEmail, userName, productId } = body;
+    const updatedOrder = await this.Order.findOneAndUpdate(
+      { _id: orderId },
+      {
+        $set: {
+          "orderItems.$[item].review": {
+            review,
+            rating,
+            reviewDate: new Date(),
+          },
+        },
+      },
+      {
+        arrayFilters: [{ "item.productId": productId }],
+      }
+    );
+    if (updatedOrder && updatedOrder.userEmail === userEmail) {
+      const reviewObj = {
+        customer: {
+          name: userName,
+          email: userEmail,
+        },
+        rating,
+        review: review,
+        reviewDate: new Date(),
+      };
+      await this.Products.addReviewToProductById(productId, reviewObj);
+    }
+    return updatedOrder;
+  }
 }

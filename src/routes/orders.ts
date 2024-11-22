@@ -25,4 +25,12 @@ router.post(
   })
 );
 
+router.post(
+  "/reviewOrders",
+  asyncHandler(async (req, res) => {
+    const order = await orderServices.reviewOrders(req.body);
+    res.send(order);
+  })
+);
+
 module.exports = router;

@@ -26,6 +26,11 @@ const orderItemSchema = new mongoose.Schema({
     type: String,
     default: "Waiting for seller approval",
   },
+  review: {
+    rating: Number,
+    review: String,
+    reviewDate: Date,
+  },
   updatedAt: {
     type: Date,
     default: new Date(),

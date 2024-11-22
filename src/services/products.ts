@@ -134,6 +134,42 @@ export class ProductServices {
   }
 
   @Log()
+  async addReviewToProductById(id, review) {
+    const productRes = await this.Product.findById(id);
+    const product = productRes.toObject();
+    if (product?._id) {
+      const ratings = {
+        average: 0,
+        count: 0,
+      };
+      let totalRating = 0;
+      for (const reviewObj of [...product.reviews, review]) {
+        // if (reviewObj?.customer?.email === review.customer.email)
+        //   return product;
+        totalRating += reviewObj.rating;
+        ratings.count += 1;
+      }
+      ratings.average = totalRating / ratings.count;
+
+      const updatedProduct = await this.Product.findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            ratings,
+            updatedAt: new Date(),
+          },
+          $push: { reviews: review },
+        },
+        { new: true }
+      );
+      if (updatedProduct?._id) {
+        await this.updateProductFromMainList(product);
+      }
+      return product;
+    }
+  }
+
+  @Log()
   async updateProductsStock(body) {
     const updateApi = async (id, soldStock) => {
       const product = await this.Product.findByIdAndUpdate(
